@@ -4,6 +4,7 @@
  */
 package com.mycompany.comp603_assignment1;
 import java.util.ArrayList;
+import java.util.Map;
 /**
  *
  * @author jonghapark
@@ -16,12 +17,12 @@ public class Student extends User{
     //private double gpa etc..
     
     //Constructor
-    Student(String studentID,String name,String major,ArrayList<String> courses){
-        this.studentID = studentID;
-        this.name = name;
-        this.major = major;
-        this.courses = courses;
-    }
+//    Student(String studentID,String name,String major,ArrayList<String> courses){
+//        this.studentID = studentID;
+//        this.name = name;
+//        this.major = major;
+//        this.courses = courses;
+//    }
     
     //Getters
     /**
