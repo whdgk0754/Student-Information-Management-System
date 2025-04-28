@@ -15,6 +15,18 @@ public class Course {
     /**
      * @return the courseName
      */
+    
+    // 기본 생성자
+    public Course() {
+    }
+
+    // 매개변수를 받는 생성자
+    public Course(String courseID, String courseName, int credit) {
+        this.courseID = courseID;
+        this.courseName = courseName;
+        this.credit = credit;
+    }
+    
     public String getCourseName() {
         return courseName;
     }

@@ -9,20 +9,25 @@ import java.util.Map;
  *
  * @author jonghapark
  */
-public class Student extends User{
+public class Student {
     private String studentID; //Primary key
     private String name;
     private String major;
     
     
     
-    //Constructor
-//    Student(String studentID,String name,String major,ArrayList<String> courses){
-//        this.studentID = studentID;
-//        this.name = name;
-//        this.major = major;
-//        this.courses = courses;
-//    }
+
+    
+    // 기본 생성자
+    public Student() {
+    }
+
+    // String, String, String을 받는 생성자
+    public Student(String studentID, String name, String major) {
+        this.studentID = studentID;
+        this.name = name;
+        this.major = major;
+    }
     
     //Getters
     /**

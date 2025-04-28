@@ -18,15 +18,25 @@ public class StudentManagement {
     //declare studentList to store all student objects
     private ArrayList<Student> studentList = new ArrayList<>();
     private Map<String, Student> studentMap = new HashMap<>();
-    //Each student has their own courses
-    private Map<String, Enrollment> enrollmentMap = new HashMap<>();
+    Validator validator = new Validator();
+    
+    // File I/O database
+    private StudentDatabaseImpl studentDatabase = new StudentDatabaseImpl(new FileHandler());
+
+    // constructor - loads database
+    public StudentManagement() {
+        List<Student> loadedStudents = studentDatabase.readStudentsFromFile("students.txt");
+        for (Student student : loadedStudents) {
+            studentList.add(student);
+            studentMap.put(student.getStudentID(), student);
+        }
+    }
     
     
-    
-    
+    //Menu
     public void studentManagementMenu(CourseManagement courseManagement){
         Scanner scanner = new Scanner(System.in);
-        Validator validator = new Validator();
+       
         int choice = 0;
         
         
@@ -50,19 +60,19 @@ public class StudentManagement {
                         addStudent();
                         break;
                     case 2:
-                        System.out.println("Enter student ID to update: ");
+                        //System.out.println("Enter student ID to update: ");
                         String updateID = validator.getValidStudentID();
                         updateStudent(updateID);
                         break;
                     case 3:
-                        System.out.println("Enter student ID to delete: ");
+                        //System.out.println("Enter student ID to delete: ");
                         String deleteID = validator.getValidStudentID();
                         System.out.println("Are you sure you want to delete " + deleteID + "? (y/n): ");
                         String confirm = scanner.nextLine();
                         deleteStudent(deleteID, confirm);
                         break;
                     case 4:  
-                        System.out.println("Enter student ID to search: ");
+                        //System.out.println("Enter student ID to search: ");
                         String searchID = validator.getValidStudentID();
                         searchStudent(searchID);
                         break;
@@ -71,18 +81,9 @@ public class StudentManagement {
                         listAllStudents();
                         break;
                     case 6:
-                        System.out.println("Enter student ID to enroll: ");
-                        String enrollID = validator.getValidStudentID();
-                        enrollCourseToStudent(enrollID, courseManagement);
-                    case 7:
-                        System.out.println("Enter student ID to list student's courses: ");
-                        String studentID = validator.getValidStudentID();
-                        viewStudentCourses(studentID);
-                        break;
-                        
-                    case 8:    
                         System.out.println("Exiting Student Management Menu...");
                         break;
+                   
                     default:
                         System.out.println("Invalid choice. Please select a valid option.");
                         
@@ -96,21 +97,19 @@ public class StudentManagement {
             
         }
     }
+    //add new student
     public void addStudent(){
-        Scanner scanner = new Scanner(System.in);
-        Validator validator = new Validator();
-        ArrayList<String> courses = new ArrayList<>();
+        
         //create a new student instance
         Student newStudent = new Student();
-        String check;
-        //using setters
-        System.out.println("Enter student name : ");
+        
+        //System.out.println("Enter student name : ");
         newStudent.setName(validator.getValidName());
         
-        System.out.println("Enter student major : ");
+        //System.out.println("Enter student major : ");
         newStudent.setMajor(validator.getValidMajor());
         
-        System.out.println("Enter student ID : ");
+        //System.out.println("Enter student ID : ");
         newStudent.setStudentID(validator.getValidStudentID());
         
         
@@ -120,13 +119,16 @@ public class StudentManagement {
         studentList.add(newStudent);
         //add the student to the map
         studentMap.put(newStudent.getStudentID(), newStudent);
+        // save to database
+        studentDatabase.writeStudentsToFile(studentList, "students.txt");
         //require fuction that links to database 
         System.out.println("Student added successfully.");
         
     }
-
+    
+    //list all students
     public void listAllStudents(){
-        //function that load from DB
+        
         if(studentList.isEmpty()){
             System.out.println("No student found");
             return; 
@@ -139,8 +141,10 @@ public class StudentManagement {
             System.out.println("Student Major: " + student.getMajor());
         }
     }
+    
+    //update students
     public void updateStudent(String studentID){
-    Validator validator = new Validator();
+    
     //load DB and use switch to update
     Scanner scanner = new Scanner(System.in);
     //check studentList is empty
@@ -154,7 +158,7 @@ public class StudentManagement {
             System.out.println("\nWhich data would you like to update?");
             System.out.println("1. Student name");
             System.out.println("2. Major");
-            System.out.println("3. exit");
+            System.out.println("3. Exit");
             int input = scanner.nextInt();
             switch(input){
                 case 1:
@@ -169,10 +173,15 @@ public class StudentManagement {
                     System.out.println("Exit...");
                     break;
                 default:
-                    System.out.println("Error: you entered invalid input. try again.");
+                    System.out.println("Error: you entered invalid input. Try again.");
                     break;
                  
             }
+            
+             // update to database
+            studentDatabase.writeStudentsToFile(studentList, "students.txt");
+            
+            System.out.println("Student updated successfully.");
             
         }else
             System.out.println("Student ID is not valid: " + studentID);
@@ -181,6 +190,7 @@ public class StudentManagement {
      
     }
     
+    //delete student
     public boolean deleteStudent(String studentID, String confirm){
         
         if(!confirm.equalsIgnoreCase("y")){
@@ -203,6 +213,8 @@ public class StudentManagement {
         
         if(foundList){
             studentMap.remove(studentID);
+            // update to database
+            studentDatabase.writeStudentsToFile(studentList, "students.txt");
             System.out.println("Student successfully deleted.");
             return true;
         }else{
@@ -212,6 +224,8 @@ public class StudentManagement {
         
     
     }
+    
+    //search student from database and list
     public void searchStudent(String studentID){
         
         Student student = studentMap.get(studentID);
@@ -223,58 +237,19 @@ public class StudentManagement {
             System.out.println("Student Not Found with ID: " + studentID);
             
         }
-        
-        
-        
     
     }
     
+    //search student from database
+    public Student searchStudentObject(String studentID) {
+        return studentMap.get(studentID);
+    }
+    
         
-public void viewStudentCourses(String studentID){
-    Enrollment enrollment = enrollmentMap.get(studentID);
-    if (enrollment == null) {
-        System.out.println("Student not found or no enrollment record.");
-        return;
-    }
-
-    List<Course> courses = enrollment.getCourseList();
-    if (courses.isEmpty()) {
-        System.out.println("No courses enrolled for this student.");
-    } else {
-        System.out.println("Courses enrolled by student " + studentID + ":");
-        for (Course course : courses) {
-            System.out.println("- " + course.getCourseName() + " (" + course.getCourseID() + "), Credit: " + course.getCredit());
-        }
-    }
-}
-
-public void enrollCourseToStudent(String studentID, CourseManagement courseManagement) {
-    Validator validator = new Validator();
-    // check student exists
-    Student student = studentMap.get(studentID);
-    if (student == null) {
-        System.out.println("Student not found.");
-        return;
-    }
-
-    // check student has enrolled
-    Enrollment enrollment = enrollmentMap.get(studentID);
-    if (enrollment == null) {
-        enrollment = new Enrollment(studentID);
-        enrollmentMap.put(studentID, enrollment);
-    }
-
-    System.out.println("Enter Course ID to enroll:");
-    String courseID = validator.getValidCourseCode();
-
-    Course course = courseManagement.searchCourse(courseID);
-    if (course == null) {
-        return;
-    }
-
-    enrollment.addCourseToStudent(course);
-    System.out.println("Course successfully enrolled for student " + studentID + ".");
-}
 
 }
+
+
+    
+
     

@@ -23,6 +23,18 @@ public class Enrollment {
           
     }
     
+    // 기본 생성자
+    public Enrollment() {
+    }
+
+    // String studentID와 String courseID를 받는 생성자 추가
+    public Enrollment(String studentID, String courseID) {
+        this.studentID = studentID;
+        this.courseList = new ArrayList<>();
+        Course course = new Course(courseID, "", 0);  // courseID만 설정
+        addCourseToStudent(course);
+    }
+    
     //return this.studentID
     public String getStudentID(){
         return studentID;

@@ -15,11 +15,23 @@ import java.util.Iterator;
 public class CourseManagement {
     private List<Course> courseList = new ArrayList<>();
     private HashMap<String, Course> courseMap = new HashMap<>();
+    Validator validator = new Validator();
+    // 🔵 [추가] 파일 입출력을 위한 Database
+    private CourseDatabaseImpl courseDatabase = new CourseDatabaseImpl(new FileHandler());
+
+    // 🔵 [추가] 생성자 - 프로그램 시작할 때 파일에서 데이터 읽기
+    public CourseManagement() {
+        List<Course> loadedCourses = courseDatabase.readCoursesFromFile("courses.txt");
+        for (Course course : loadedCourses) {
+            courseList.add(course);
+            courseMap.put(course.getCourseID(), course);
+        }
+    }
     
     
     public void courseManagementMenu(){
         Scanner scanner = new Scanner(System.in);
-        Validator validator = new Validator();
+        
         int choice = 0;
         
         
@@ -82,7 +94,7 @@ public class CourseManagement {
     
     
     public void addCourse(){
-        Validator validator = new Validator();
+        
         Scanner scanner = new Scanner(System.in);
         Course newCourse = new Course();
         
@@ -110,6 +122,10 @@ public class CourseManagement {
         
         courseList.add(newCourse);
         courseMap.put(newCourse.getCourseID(), newCourse); //?
+        
+        // 🔵 [추가] 파일 저장
+        courseDatabase.writeCoursesToFile(courseList, "courses.txt");
+        
         System.out.println("Course has been added successfully");
         
         
@@ -118,7 +134,7 @@ public class CourseManagement {
     
     public void updateCourse(String courseID){
         Scanner scanner = new Scanner(System.in);
-        Validator validator = new Validator();
+        
         Course course = courseMap.get(courseID);
         
         if(course!= null){
@@ -159,6 +175,11 @@ public class CourseManagement {
                  
             }
             
+            // 🔵 [추가] 파일 저장
+            courseDatabase.writeCoursesToFile(courseList, "courses.txt");
+
+            System.out.println("Course updated successfully.");
+            
             
         }else
             System.out.println("Course ID is not valid: " + courseID);
@@ -187,6 +208,8 @@ public class CourseManagement {
         
         if(foundList){
             courseMap.remove(courseID);
+            // 🔵 [추가] 파일 저장
+            courseDatabase.writeCoursesToFile(courseList, "courses.txt");
             System.out.println("Course successfully deleted.");
             return true;
         }else{

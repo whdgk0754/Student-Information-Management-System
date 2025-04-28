@@ -29,7 +29,7 @@ public class Validator {
     // 학생 이름이 유효한지 확인하는 메서드
     public boolean validateName(String name) {
         // 이름은 공백을 포함하지 않는 알파벳만 허용
-        String regex = "^[A-Za-z]+$"; 
+        String regex = "^[A-Za-z\\s]+$"; 
         return name.matches(regex);
     }
 
@@ -77,7 +77,7 @@ public class Validator {
         Scanner scanner = new Scanner(System.in);
         String courseCode;
         while (true) {
-            System.out.print("Enter Course Code (e.g., CS101): ");
+            System.out.print("Enter Course Code (e.g., COMP603): ");
             courseCode = scanner.nextLine();
             if (validateCourseCode(courseCode)) {
                 break;
