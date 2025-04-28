@@ -10,11 +10,11 @@ import java.util.Map;
  * @author jonghapark
  */
 public class Student extends User{
-    private String studentID;
+    private String studentID; //Primary key
     private String name;
     private String major;
-    private ArrayList<String> courses;
-    //private double gpa etc..
+    
+    
     
     //Constructor
 //    Student(String studentID,String name,String major,ArrayList<String> courses){
@@ -23,6 +23,17 @@ public class Student extends User{
 //        this.major = major;
 //        this.courses = courses;
 //    }
+    
+    // 기본 생성자
+    public Student() {
+    }
+
+    // String, String, String을 받는 생성자
+    public Student(String studentID, String name, String major) {
+        this.studentID = studentID;
+        this.name = name;
+        this.major = major;
+    }
     
     //Getters
     /**
@@ -46,9 +57,7 @@ public class Student extends User{
     /**
      * @return the course
      */
-    public ArrayList<String> getCourse() {
-        return courses;
-    }
+    
     
     //Setters
     /**
@@ -69,12 +78,7 @@ public class Student extends User{
     public void setMajor(String major) {
         this.major = major;
     }
-    /**
-     * @param courses the course to set
-     */
-    public void setCourse(ArrayList<String> courses) {
-        this.courses = new ArrayList<>(courses);
-    }
+    
     
     
 }
