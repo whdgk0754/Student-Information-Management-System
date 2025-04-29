@@ -4,105 +4,112 @@
  */
 package com.mycompany.comp603_assignment1;
 
-/**
- *
- * @author gvsv0
- */
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author gvsv0
+ */
 public class FileHandler {
 
-    // 학생 데이터를 파일에 저장
-    public void writeStudentsToFile(String filename, List<Student> students) {
+    // Save student data to a file
+    public void writeStudentsToFile(List<Student> students, String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Student student : students) {
-                writer.write(student.getStudentID() + "," + student.getName() + "," + student.getMajor() + "\n");
+                writer.write(student.getStudentID() + "," + student.getName() + "," + student.getMajor());
+                writer.newLine();
             }
-            System.out.println("Student data has been written to the file.");
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // 학생 데이터를 파일에서 읽어오기
+    // Save course data to a file
+    public void writeCoursesToFile(List<Course> courses, String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Course course : courses) {
+                writer.write(course.getCourseID() + "," + course.getCourseName() + "," + course.getCredit());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Save enrollment data to a file
+    // Each line represents a pairing between student ID and course ID
+    public void writeEnrollmentsToFile(List<Enrollment> enrollments, String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Enrollment enrollment : enrollments) {
+                for (Course course : enrollment.getCourseList()) {
+                    writer.write(enrollment.getStudentID() + "," + course.getCourseID());
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Read student data from a file and return as a list of Student objects
     public List<Student> readStudentsFromFile(String filename) {
         List<Student> students = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                Student student = new Student();
-                student.setStudentID(data[0]);
-                student.setName(data[1]);
-                student.setMajor(data[2]);
-                students.add(student);
+                String[] tokens = line.split(",");
+                if (tokens.length == 3) {
+                    String studentID = tokens[0];
+                    String name = tokens[1];
+                    String major = tokens[2];
+                    students.add(new Student(studentID, name, major));
+                }
             }
         } catch (IOException e) {
-            System.out.println("Error reading from file: " + e.getMessage());
+            e.printStackTrace();
         }
         return students;
     }
 
-    // 과목 데이터를 파일에 저장
-    public void writeCoursesToFile(String filename, List<Course> courses) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (Course course : courses) {
-                writer.write(course.getCourseID() + "," + course.getCourseName() + "," + course.getCredit() + "\n");
-            }
-            System.out.println("Course data has been written to the file.");
-        } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
-        }
-    }
 
-    // 과목 데이터를 파일에서 읽어오기
+    // Read course data from a file and return as a list of Course objects
     public List<Course> readCoursesFromFile(String filename) {
         List<Course> courses = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                Course course = new Course();
-                course.setCourseID(data[0]);
-                course.setCourseName(data[1]);
-                course.setCredit(Integer.parseInt(data[2]));
-                courses.add(course);
+                String[] tokens = line.split(",");
+                if (tokens.length == 3) {
+                    String courseID = tokens[0];
+                    String courseName = tokens[1];
+                    int credit = Integer.parseInt(tokens[2]);
+                    courses.add(new Course(courseID, courseName, credit));
+                }
             }
         } catch (IOException e) {
-            System.out.println("Error reading from file: " + e.getMessage());
+            e.printStackTrace();
         }
         return courses;
     }
 
-    // 수강 데이터를 파일에 저장
-    public void writeEnrollmentsToFile(String filename, List<Enrollment> enrollments) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (Enrollment enrollment : enrollments) {
-                writer.write(enrollment.getStudentID() + "," + enrollment.getCourse().getCourseID() + "\n");
-            }
-            System.out.println("Enrollment data has been written to the file.");
-        } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
-        }
-    }
-
-    // 수강 데이터를 파일에서 읽어오기
+    // Read enrollment data from a file and return as a list of Enrollment objects
     public List<Enrollment> readEnrollmentsFromFile(String filename) {
         List<Enrollment> enrollments = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                Enrollment enrollment = new Enrollment(data[0]);
-                Course course = new Course();
-                course.setCourseID(data[1]);
-                enrollment.addCourse(course); // 수업을 추가하는 방법은 상황에 맞게 처리
-                enrollments.add(enrollment);
+                String[] tokens = line.split(",");
+                if (tokens.length == 2) {
+                    String studentID = tokens[0];
+                    String courseID = tokens[1];
+                    enrollments.add(new Enrollment(studentID, courseID));
+                }
             }
         } catch (IOException e) {
-            System.out.println("Error reading from file: " + e.getMessage());
+            e.printStackTrace();
         }
         return enrollments;
     }

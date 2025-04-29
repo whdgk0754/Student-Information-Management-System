@@ -8,60 +8,49 @@ package com.mycompany.comp603_assignment1;
  *
  * @author gvsv0
  */
-import java.util.ArrayList;
 import java.util.List;
 
+
 public class StudentDatabaseImpl extends Database {
-    private List<Student> students = new ArrayList<>();
+
+    private FileHandler fileHandler;
+
+    // Constructor: receives a FileHandler for file operations
+    public StudentDatabaseImpl(FileHandler fileHandler) {
+        this.fileHandler = fileHandler;
+    }
+
+    // Writes a list of students to the specified file
+    @Override
+    public void writeStudentsToFile(List<Student> students, String filename) {
+        fileHandler.writeStudentsToFile(students, filename);
+    }
+
+    // Reads a list of students from the specified file
+    @Override
+    public List<Student> readStudentsFromFile(String filename) {
+        return fileHandler.readStudentsFromFile(filename);
+    }
+
+    // The following methods are not supported because this class handles only student data
 
     @Override
-    public void addStudent(Student student) {
-        students.add(student);
-        System.out.println("Student added successfully.");
+    public void writeCoursesToFile(List<Course> courses, String filename) {
+        throw new UnsupportedOperationException("StudentDatabaseImpl does not support writeCoursesToFile.");
     }
 
     @Override
-    public Student getStudent(String studentId) {
-        for (Student student : students) {
-            if (student.getStudentID().equals(studentId)) {
-                return student;
-            }
-        }
-        System.out.println("Student not found.");
-        return null;
+    public void writeEnrollmentsToFile(List<Enrollment> enrollments, String filename) {
+        throw new UnsupportedOperationException("StudentDatabaseImpl does not support writeEnrollmentsToFile.");
     }
 
     @Override
-    public void enrollStudent(String studentId, String courseId) {
-        Student student = getStudent(studentId);
-        if (student != null) {
-            Course course = new Course(); // 실제 과목은 다른 곳에서 관리되어야 함
-            student.addCourse(course);
-            System.out.println("Student enrolled in course: " + courseId);
-        }
+    public List<Course> readCoursesFromFile(String filename) {
+        throw new UnsupportedOperationException("StudentDatabaseImpl does not support readCoursesFromFile.");
     }
 
     @Override
-    public boolean cancelEnrollment(String studentId, String courseId) {
-        Student student = getStudent(studentId);
-        if (student != null) {
-            Course course = new Course(); // 실제 과목은 다른 곳에서 관리
-            if (student.removeCourse(course)) {
-                System.out.println("Enrollment canceled for student " + studentId);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void addCourse(Course course) {
-        // 학생 관련 데이터는 과목 추가를 관리하지 않음
-    }
-
-    @Override
-    public Course getCourse(String courseId) {
-        // 학생 관련 데이터는 과목 조회를 관리하지 않음
-        return null;
+    public List<Enrollment> readEnrollmentsFromFile(String filename) {
+        throw new UnsupportedOperationException("StudentDatabaseImpl does not support readEnrollmentsFromFile.");
     }
 }

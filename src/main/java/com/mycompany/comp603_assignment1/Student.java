@@ -9,20 +9,21 @@ import java.util.Map;
  *
  * @author jonghapark
  */
-public class Student extends User{
-    private String studentID;
+public class Student {
+    private String studentID; //Primary key
     private String name;
     private String major;
-    private ArrayList<String> courses;
-    //private double gpa etc..
     
-    //Constructor
-//    Student(String studentID,String name,String major,ArrayList<String> courses){
-//        this.studentID = studentID;
-//        this.name = name;
-//        this.major = major;
-//        this.courses = courses;
-//    }
+    // Default constructor
+    public Student() {
+    }
+
+    // Constructor that accepts studentID, name, and major
+    public Student(String studentID, String name, String major) {
+        this.studentID = studentID;
+        this.name = name;
+        this.major = major;
+    }
     
     //Getters
     /**
@@ -46,9 +47,7 @@ public class Student extends User{
     /**
      * @return the course
      */
-    public ArrayList<String> getCourse() {
-        return courses;
-    }
+    
     
     //Setters
     /**
@@ -69,12 +68,7 @@ public class Student extends User{
     public void setMajor(String major) {
         this.major = major;
     }
-    /**
-     * @param courses the course to set
-     */
-    public void setCourse(ArrayList<String> courses) {
-        this.courses = new ArrayList<>(courses);
-    }
+    
     
     
 }
