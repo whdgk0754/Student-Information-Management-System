@@ -1,0 +1,5 @@
+Comp603,PDE,15
+Comp610,Data structure,15
+Comp601,ab b,15
+Comp602,abc,15
+qwer123,sd,9999
