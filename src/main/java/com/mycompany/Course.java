@@ -13,8 +13,20 @@ public class Course {
     private String courseID;
     private int credit;
     /**
-     * @return the courseName
      */
+    
+    // Default constructor
+    public Course() {
+    }
+
+    // Constructor with parameters
+    public Course(String courseID, String courseName, int credit) {
+        this.courseID = courseID;
+        this.courseName = courseName;
+        this.credit = credit;
+    }
+    
+    // Getter for course name
     public String getCourseName() {
         return courseName;
     }
