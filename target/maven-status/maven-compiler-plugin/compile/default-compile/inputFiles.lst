@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Users/jonghapark/Desktop/Comp603/Student-Information-Management-System-main/src/main/java/com/mycompany/comp603_assignment1/Course.java
 /Users/jonghapark/Desktop/Comp603/Student-Information-Management-System-main/src/main/java/com/mycompany/comp603_assignment1/CourseDatabaseImpl.java
 /Users/jonghapark/Desktop/Comp603/Student-Information-Management-System-main/src/main/java/com/mycompany/comp603_assignment1/CourseManagement.java
@@ -11,3 +12,9 @@
 /Users/jonghapark/Desktop/Comp603/Student-Information-Management-System-main/src/main/java/com/mycompany/comp603_assignment1/StudentDatabaseImpl.java
 /Users/jonghapark/Desktop/Comp603/Student-Information-Management-System-main/src/main/java/com/mycompany/comp603_assignment1/StudentManagement.java
 /Users/jonghapark/Desktop/Comp603/Student-Information-Management-System-main/src/main/java/com/mycompany/comp603_assignment1/Validator.java
+=======
+/Users/jonghapark/NetBeansProjects/Comp603_assignment1/src/main/java/com/mycompany/comp603_assignment1/Main.java
+/Users/jonghapark/NetBeansProjects/Comp603_assignment1/src/main/java/com/mycompany/comp603_assignment1/Student.java
+/Users/jonghapark/NetBeansProjects/Comp603_assignment1/src/main/java/com/mycompany/comp603_assignment1/StudentManagement.java
+/Users/jonghapark/NetBeansProjects/Comp603_assignment1/src/main/java/com/mycompany/comp603_assignment1/User.java
+>>>>>>> c45d28873c1cff2337eaff297d2e4f2244179bdc
