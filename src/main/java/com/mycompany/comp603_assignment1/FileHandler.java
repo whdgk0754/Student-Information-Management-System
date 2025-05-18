@@ -7,11 +7,8 @@ package com.mycompany.comp603_assignment1;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
-=======
 import java.util.Map;
 import java.util.HashMap;
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
 
 /**
  *
@@ -19,11 +16,7 @@ import java.util.HashMap;
  */
 public class FileHandler {
 
-<<<<<<< HEAD
-    // --- 학생 데이터 저장 ---
-=======
     // Save student data to a file
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void writeStudentsToFile(List<Student> students, String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Student student : students) {
@@ -35,11 +28,7 @@ public class FileHandler {
         }
     }
 
-<<<<<<< HEAD
-    // --- 과목 데이터 저장 ---
-=======
     // Save course data to a file
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void writeCoursesToFile(List<Course> courses, String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Course course : courses) {
@@ -51,13 +40,9 @@ public class FileHandler {
         }
     }
 
-<<<<<<< HEAD
-    // --- 수강 데이터 저장 ---
-=======
 
     // Save enrollment data to a file
     // Each line represents a pairing between student ID and course ID
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void writeEnrollmentsToFile(List<Enrollment> enrollments, String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Enrollment enrollment : enrollments) {
@@ -71,11 +56,7 @@ public class FileHandler {
         }
     }
 
-<<<<<<< HEAD
-    // --- 학생 데이터 읽기 ---
-=======
     // Read student data from a file and return as a list of Student objects
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public List<Student> readStudentsFromFile(String filename) {
         List<Student> students = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -95,12 +76,8 @@ public class FileHandler {
         return students;
     }
 
-<<<<<<< HEAD
-    // --- 과목 데이터 읽기 ---
-=======
 
     // Read course data from a file and return as a list of Course objects
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public List<Course> readCoursesFromFile(String filename) {
         List<Course> courses = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -120,16 +97,10 @@ public class FileHandler {
         return courses;
     }
 
-<<<<<<< HEAD
-    // --- 수강 데이터 읽기 ---
-    public List<Enrollment> readEnrollmentsFromFile(String filename) {
-        List<Enrollment> enrollments = new ArrayList<>();
-=======
     // Read enrollment data from a file and return as a list of Enrollment objects
     public List<Enrollment> readEnrollmentsFromFile(String filename) {
         //declare new Map to list that each student has multiple courses
         Map<String, Enrollment> enrollments = new HashMap<>();
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -137,9 +108,6 @@ public class FileHandler {
                 if (tokens.length == 2) {
                     String studentID = tokens[0];
                     String courseID = tokens[1];
-<<<<<<< HEAD
-                    enrollments.add(new Enrollment(studentID, courseID));
-=======
                     
                     //set course
                     Course course = new Course();
@@ -156,16 +124,11 @@ public class FileHandler {
                     
                     
                     
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-<<<<<<< HEAD
-        return enrollments;
-=======
         return new ArrayList<>(enrollments.values());
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     }
 }

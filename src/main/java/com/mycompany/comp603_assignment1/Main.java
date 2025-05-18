@@ -3,11 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.comp603_assignment1;
-<<<<<<< HEAD
-import java.util.ArrayList;
-=======
 
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
+import java.util.ArrayList;
+
+
+
 /**
  *
  * @author jonghapark
@@ -18,21 +18,15 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         // create instances from each Manangement
         StudentManagement studentManagement = new StudentManagement();
         CourseManagement courseManagement = new CourseManagement();
         EnrollmentManagement enrollmentManagement = new EnrollmentManagement();
-<<<<<<< HEAD
+
         //create each database table
         DBManager.initializeDatabase();
-=======
 
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         int choice = 0;
 
         while (choice != 4) {

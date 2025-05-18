@@ -8,10 +8,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-<<<<<<< HEAD
         <exec.mainClass>com.mycompany.comp603_assignment1.Main</exec.mainClass>
-=======
-        <exec.mainClass>com.mycompany.comp603_assignment1.Comp603_assignment1</exec.mainClass>
->>>>>>> c45d28873c1cff2337eaff297d2e4f2244179bdc
     </properties>
 </project>

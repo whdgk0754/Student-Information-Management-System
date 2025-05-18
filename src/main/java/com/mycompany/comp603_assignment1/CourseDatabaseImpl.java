@@ -14,66 +14,41 @@ public class CourseDatabaseImpl extends Database {
 
     private FileHandler fileHandler;
 
-<<<<<<< HEAD
-    public CourseDatabaseImpl(FileHandler fileHandler) {
-        this.fileHandler = fileHandler;
-    }
-
-=======
     // Constructor: injects the FileHandler dependency
     public CourseDatabaseImpl(FileHandler fileHandler) {
         this.fileHandler = fileHandler;
     }
     // Writes a list of Course objects to the specified file
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public void writeCoursesToFile(List<Course> courses, String filename) {
         fileHandler.writeCoursesToFile(courses, filename);
     }
 
-<<<<<<< HEAD
-=======
     // Reads a list of Course objects from the specified file
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public List<Course> readCoursesFromFile(String filename) {
         return fileHandler.readCoursesFromFile(filename);
     }
-<<<<<<< HEAD
-
-=======
     
     // The following methods are not supported in this class
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public void writeStudentsToFile(List<Student> students, String filename) {
         throw new UnsupportedOperationException("CourseDatabaseImpl does not support writeStudentsToFile.");
     }
-<<<<<<< HEAD
-
-=======
     
     // Not supported: This class does not handle Enrollment file writing
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public void writeEnrollmentsToFile(List<Enrollment> enrollments, String filename) {
         throw new UnsupportedOperationException("CourseDatabaseImpl does not support writeEnrollmentsToFile.");
     }
-<<<<<<< HEAD
-
-=======
     
     // Not supported: This class does not handle Student file reading
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public List<Student> readStudentsFromFile(String filename) {
         throw new UnsupportedOperationException("CourseDatabaseImpl does not support readStudentsFromFile.");
     }
 
-<<<<<<< HEAD
-=======
     // Not supported: This class does not handle Enrollment file reading
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public List<Enrollment> readEnrollmentsFromFile(String filename) {
         throw new UnsupportedOperationException("CourseDatabaseImpl does not support readEnrollmentsFromFile.");

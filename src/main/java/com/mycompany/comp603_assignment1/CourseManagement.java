@@ -16,16 +16,9 @@ public class CourseManagement {
     private List<Course> courseList = new ArrayList<>();
     private HashMap<String, Course> courseMap = new HashMap<>();
     Validator validator = new Validator();
-<<<<<<< HEAD
-    // 🔵 [추가] 파일 입출력을 위한 Database
-    private CourseDatabaseImpl courseDatabase = new CourseDatabaseImpl(new FileHandler());
-
-    // 🔵 [추가] 생성자 - 프로그램 시작할 때 파일에서 데이터 읽기
-=======
     private CourseDatabaseImpl courseDatabase = new CourseDatabaseImpl(new FileHandler());
     
     // Constructor: Load existing courses from file into list and map
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public CourseManagement() {
         List<Course> loadedCourses = courseDatabase.readCoursesFromFile("courses.txt");
         for (Course course : loadedCourses) {
@@ -34,11 +27,7 @@ public class CourseManagement {
         }
     }
     
-<<<<<<< HEAD
-    
-=======
     // Displays and handles the course management menu
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void courseManagementMenu(){
         Scanner scanner = new Scanner(System.in);
         
@@ -95,29 +84,18 @@ public class CourseManagement {
                 
             }else {
                     System.out.println("Invalid input. Please enter a number.");
-<<<<<<< HEAD
-                    scanner.next();
-=======
                     scanner.next();// discard invalid input
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
                     }
             
             
         }
     }
     
-<<<<<<< HEAD
-    
-    public void addCourse(){
-        
-        Scanner scanner = new Scanner(System.in);
-=======
     // Adds a new course to the system after validation    
     public void addCourse(){
         
         Scanner scanner = new Scanner(System.in);
         
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         Course newCourse = new Course();
         
         
@@ -130,9 +108,6 @@ public class CourseManagement {
         newCourse.setCourseName(courseName);
         
         System.out.println("Enter course ID:");
-<<<<<<< HEAD
-        newCourse.setCourseID(validator.getValidCourseCode()); //ex. MATH101
-=======
         String courseID = validator.getValidCourseCode(); 
         
         // Prevent duplicate course ID
@@ -142,7 +117,6 @@ public class CourseManagement {
         }
         
         newCourse.setCourseID(courseID);
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         
         System.out.println("Enter course credit:");
         String credit = scanner.next();
@@ -153,18 +127,10 @@ public class CourseManagement {
         newCourse.setCredit(Integer.parseInt(credit));
         
         
-<<<<<<< HEAD
-        
-        courseList.add(newCourse);
-        courseMap.put(newCourse.getCourseID(), newCourse); //?
-        
-        // 🔵 [추가] 파일 저장
-=======
         // Save to collection and file
         courseList.add(newCourse);
         courseMap.put(newCourse.getCourseID(), newCourse); //?
         
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         courseDatabase.writeCoursesToFile(courseList, "courses.txt");
         
         System.out.println("Course has been added successfully");
@@ -173,10 +139,7 @@ public class CourseManagement {
         
     }
     
-<<<<<<< HEAD
-=======
     // Updates course name or credit by course ID    
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void updateCourse(String courseID){
         Scanner scanner = new Scanner(System.in);
         
@@ -187,13 +150,6 @@ public class CourseManagement {
             System.out.println("Credit: " + course.getCredit());
             
             System.out.println("\nWhich data would you like to update?");
-<<<<<<< HEAD
-            System.out.println("1. course name");
-            System.out.println("2. credit");
-            System.out.println("3. exit");
-            
-            int input = scanner.nextInt();
-=======
             System.out.println("1. Course name");
             System.out.println("2. Credit");
             System.out.println("3. Exit");
@@ -201,7 +157,6 @@ public class CourseManagement {
             int input = scanner.nextInt();// consume newline
             scanner.nextLine();
             
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
             switch(input){
                 case 1:
                     System.out.print("Enter new course name: ");
@@ -229,12 +184,7 @@ public class CourseManagement {
                     break;
                  
             }
-<<<<<<< HEAD
-            
-            // 🔵 [추가] 파일 저장
-=======
 
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
             courseDatabase.writeCoursesToFile(courseList, "courses.txt");
 
             System.out.println("Course updated successfully.");
@@ -244,11 +194,7 @@ public class CourseManagement {
             System.out.println("Course ID is not valid: " + courseID);
     }
     
-<<<<<<< HEAD
-    
-=======
     // Deletes a course from the system by ID and confirmation
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public boolean deleteCourse(String courseID, String confirm){
 
         if(!confirm.equalsIgnoreCase("y")){
@@ -271,13 +217,8 @@ public class CourseManagement {
         
         if(foundList){
             courseMap.remove(courseID);
-<<<<<<< HEAD
-            // 🔵 [추가] 파일 저장
-            courseDatabase.writeCoursesToFile(courseList, "courses.txt");
-=======
             courseDatabase.writeCoursesToFile(courseList, "courses.txt");
             EnrollmentManagement.removeCourseFromAllEnrollments(courseID);
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
             System.out.println("Course successfully deleted.");
             return true;
         }else{
@@ -287,19 +228,6 @@ public class CourseManagement {
         
     }
     
-<<<<<<< HEAD
-    public Course searchCourse(String courseID){
-        Course course = courseMap.get(courseID);
-        if(course != null){
-            return course;
-        }else{
-            System.out.println("Course Not Found with ID: " + courseID);
-            return null;
-    }
-    
-    }
-    
-=======
     // Searches for a course and prints details if found
     public Course searchCourse(String courseID) {
         Course course = courseMap.get(courseID);
@@ -315,7 +243,6 @@ public class CourseManagement {
     }
     
     // Lists all courses stored in the system
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void listAllCourses(){
         if(courseList.isEmpty()){
             System.out.println("Course List is empty.");

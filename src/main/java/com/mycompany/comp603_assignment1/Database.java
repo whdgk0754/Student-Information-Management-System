@@ -10,27 +10,6 @@ import java.util.List;
  *
  * @author gvsv0
  */
-<<<<<<< HEAD
-// Abstract Database class (파일 입출력 담당)
-public abstract class Database {
-
-    // 학생 데이터를 파일에 저장
-    public abstract void writeStudentsToFile(List<Student> students, String filename);
-
-    // 과목 데이터를 파일에 저장
-    public abstract void writeCoursesToFile(List<Course> courses, String filename);
-
-    // 수강 데이터를 파일에 저장
-    public abstract void writeEnrollmentsToFile(List<Enrollment> enrollments, String filename);
-
-    // 학생 데이터를 파일에서 읽기
-    public abstract List<Student> readStudentsFromFile(String filename);
-
-    // 과목 데이터를 파일에서 읽기
-    public abstract List<Course> readCoursesFromFile(String filename);
-
-    // 수강 데이터를 파일에서 읽기
-=======
 // Abstract Database class (responsible for file I/O operations)
 public abstract class Database {
 
@@ -50,6 +29,5 @@ public abstract class Database {
     public abstract List<Course> readCoursesFromFile(String filename);
 
     // Read enrollment data from a file
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public abstract List<Enrollment> readEnrollmentsFromFile(String filename);
 }

@@ -15,37 +15,24 @@ public class StudentDatabaseImpl extends Database {
 
     private FileHandler fileHandler;
 
-<<<<<<< HEAD
-=======
     // Constructor: receives a FileHandler for file operations
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public StudentDatabaseImpl(FileHandler fileHandler) {
         this.fileHandler = fileHandler;
     }
 
-<<<<<<< HEAD
-=======
     // Writes a list of students to the specified file
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public void writeStudentsToFile(List<Student> students, String filename) {
         fileHandler.writeStudentsToFile(students, filename);
     }
 
-<<<<<<< HEAD
-=======
     // Reads a list of students from the specified file
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     @Override
     public List<Student> readStudentsFromFile(String filename) {
         return fileHandler.readStudentsFromFile(filename);
     }
 
-<<<<<<< HEAD
-    // ❌ 필요 없는 메소드들: UnsupportedOperationException 처리
-=======
     // The following methods are not supported because this class handles only student data
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
 
     @Override
     public void writeCoursesToFile(List<Course> courses, String filename) {

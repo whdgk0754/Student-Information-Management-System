@@ -12,15 +12,6 @@ import java.util.*;
 
 public class EnrollmentManagement {
 
-<<<<<<< HEAD
-    private Map<String, Enrollment> enrollmentMap = new HashMap<>();
-
-    private EnrollmentDatabaseImpl enrollmentDatabase = new EnrollmentDatabaseImpl(new FileHandler());
-
-    Validator validator = new Validator();
-    
-    // 🔵 생성자 - 시작 시 파일에서 수강 데이터 읽기
-=======
     private static Map<String, Enrollment> enrollmentMap = new HashMap<>();
     
     private static EnrollmentDatabaseImpl enrollmentDatabase = new EnrollmentDatabaseImpl(new FileHandler());
@@ -28,7 +19,6 @@ public class EnrollmentManagement {
     Validator validator = new Validator();
     
     // Constructor - Load enrollment data from file at startup
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public EnrollmentManagement() {
         List<Enrollment> loadedEnrollments = enrollmentDatabase.readEnrollmentsFromFile("enrollments.txt");
         for (Enrollment enrollment : loadedEnrollments) {
@@ -36,11 +26,7 @@ public class EnrollmentManagement {
         }
     }
 
-<<<<<<< HEAD
-    // 🔵 메뉴 메소드
-=======
     // Main menu for enrollment management
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void enrollmentManagementMenu(StudentManagement studentManagement, CourseManagement courseManagement) {
         Scanner scanner = new Scanner(System.in);
         
@@ -85,20 +71,12 @@ public class EnrollmentManagement {
         }
     }
 
-<<<<<<< HEAD
-    // 🔵 수강신청
-=======
     // Enroll a course to a student
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void enrollCourseToStudent(StudentManagement studentManagement, CourseManagement courseManagement) {
         
        
 
-<<<<<<< HEAD
-        //System.out.println("Enter Student ID:");
-=======
         System.out.println("Enter Student ID:");
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         String studentID = validator.getValidStudentID();
 
         if (studentManagement.searchStudentObject(studentID) == null) {
@@ -120,21 +98,6 @@ public class EnrollmentManagement {
             System.out.println("Course not found.");
             return;
         }
-<<<<<<< HEAD
-
-        enrollment.addCourseToStudent(course);
-
-        // 파일 저장
-        enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
-
-        System.out.println("Course successfully enrolled for student " + studentID + ".");
-    }
-
-    // 🔵 학생 수강 목록 조회
-    public void viewStudentCourses() {
-        
-        //System.out.println("Enter Student ID:");
-=======
         
         // Check if the student is already enrolled in the course      
         for (Course c : enrollment.getCourseList()) {
@@ -157,7 +120,6 @@ public class EnrollmentManagement {
     public void viewStudentCourses() {
         
         System.out.println("Enter Student ID:");
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         String studentID = validator.getValidStudentID();
 
         Enrollment enrollment = enrollmentMap.get(studentID);
@@ -172,29 +134,16 @@ public class EnrollmentManagement {
         } else {
             System.out.println("Courses enrolled by student " + studentID + ":");
             for (Course course : courses) {
-<<<<<<< HEAD
-                System.out.println("- " + course.getCourseName() + " (" + course.getCourseID() + "), Credit: " + course.getCredit());
-=======
                 System.out.println("- " + " (" + course.getCourseID() + ")");
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
             }
         }
     }
 
-<<<<<<< HEAD
-    // 🔵 수강 취소
-    public void cancelEnrollment() {
-        
-        
-
-        //System.out.println("Enter Student ID:");
-=======
     // Cancel a course enrollment for a student
     public void cancelEnrollment() {
        
 
         System.out.println("Enter Student ID:");
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         String studentID = validator.getValidStudentID();
 
         Enrollment enrollment = enrollmentMap.get(studentID);
@@ -202,48 +151,26 @@ public class EnrollmentManagement {
             System.out.println("Student not found or no enrollment record.");
             return;
         }
-<<<<<<< HEAD
-=======
         
         if (enrollment.getCourseList().isEmpty()) {
             System.out.println("Student has no enrolled courses to cancel.");
             return;
         }
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
 
         System.out.println("Enter Course ID to cancel:");
         String courseID = validator.getValidCourseCode();
 
-<<<<<<< HEAD
-        boolean removed = false;
-=======
         boolean found = false;
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         Iterator<Course> iterator = enrollment.getCourseList().iterator();
         while (iterator.hasNext()) {
             Course course = iterator.next();
             if (course.getCourseID().equals(courseID)) {
                 iterator.remove();
-<<<<<<< HEAD
-                removed = true;
-=======
                 found = true;
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
                 break;
             }
         }
 
-<<<<<<< HEAD
-        if (removed) {
-            enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
-            System.out.println("Course enrollment cancelled for student " + studentID + ".");
-        } else {
-            System.out.println("Course not found in student's enrollment.");
-        }
-    }
-
-    // 🔵 전체 수강 목록 조회
-=======
         if (found) {
             enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
             System.out.println("Course enrollment cancelled for student " + studentID + ".");
@@ -253,29 +180,18 @@ public class EnrollmentManagement {
     }
 
     // List all enrollments for all students
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public void listAllEnrollments() {
         if (enrollmentMap.isEmpty()) {
             System.out.println("No enrollment records found.");
             return;
         }
-<<<<<<< HEAD
-
-=======
         
         
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         System.out.println("All Enrollments:");
         for (Enrollment enrollment : enrollmentMap.values()) {
             System.out.println("----------------------------");
             System.out.println("Student ID: " + enrollment.getStudentID());
             for (Course course : enrollment.getCourseList()) {
-<<<<<<< HEAD
-                System.out.println("- " + course.getCourseName() + " (" + course.getCourseID() + "), Credit: " + course.getCredit());
-            }
-        }
-    }
-=======
                 System.out.println("- " + " (" + course.getCourseID() + ")");
                 
             }
@@ -307,5 +223,4 @@ public class EnrollmentManagement {
             enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
         }
     }
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
 }
