@@ -23,17 +23,6 @@ public class Enrollment {
           
     }
     
-<<<<<<< HEAD
-    // 기본 생성자
-    public Enrollment() {
-    }
-
-    // String studentID와 String courseID를 받는 생성자 추가
-    public Enrollment(String studentID, String courseID) {
-        this.studentID = studentID;
-        this.courseList = new ArrayList<>();
-        Course course = new Course(courseID, "", 0);  // courseID만 설정
-=======
     // Default constructor
     public Enrollment() {
     }
@@ -43,7 +32,6 @@ public class Enrollment {
         this.studentID = studentID;
         this.courseList = new ArrayList<>();
         Course course = new Course(courseID, "", 0); 
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
         addCourseToStudent(course);
     }
     
@@ -58,20 +46,8 @@ public class Enrollment {
     
     //add courses to this student
     public void addCourseToStudent(Course course){
-<<<<<<< HEAD
-        if(!courseList.contains(course)){
-            courseList.add(course);
-            System.out.println("Course " + course.getCourseID() + "added to student " + studentID);
-        }else{
-            System.out.println("Student " + studentID + "already enrolled in course " + course.getCourseID());
-        }
-    }
-    
-}
-=======
             courseList.add(course);
             
     
 }
 }
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656

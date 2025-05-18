@@ -1,4 +1,20 @@
+<<<<<<< HEAD
+com/mycompany/comp603_assignment1/FileHandler.class
+com/mycompany/comp603_assignment1/Main.class
+com/mycompany/comp603_assignment1/Enrollment.class
+com/mycompany/comp603_assignment1/Course.class
+com/mycompany/comp603_assignment1/StudentManagement.class
+com/mycompany/comp603_assignment1/CourseDatabaseImpl.class
+com/mycompany/comp603_assignment1/Database.class
+com/mycompany/comp603_assignment1/EnrollmentManagement.class
+com/mycompany/comp603_assignment1/EnrollmentDatabaseImpl.class
+com/mycompany/comp603_assignment1/CourseManagement.class
+com/mycompany/comp603_assignment1/StudentDatabaseImpl.class
+com/mycompany/comp603_assignment1/Student.class
+com/mycompany/comp603_assignment1/Validator.class
+=======
 com/mycompany/comp603_assignment1/User.class
 com/mycompany/comp603_assignment1/Student.class
 com/mycompany/comp603_assignment1/StudentManagement.class
 com/mycompany/comp603_assignment1/Main.class
+>>>>>>> c45d28873c1cff2337eaff297d2e4f2244179bdc

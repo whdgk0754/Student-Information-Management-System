@@ -60,31 +60,19 @@ public class StudentManagement {
                         addStudent();
                         break;
                     case 2:
-<<<<<<< HEAD
-                        //System.out.println("Enter student ID to update: ");
-=======
                         System.out.println("Enter student ID to update: ");
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
                         String updateID = validator.getValidStudentID();
                         updateStudent(updateID);
                         break;
                     case 3:
-<<<<<<< HEAD
-                        //System.out.println("Enter student ID to delete: ");
-=======
                         System.out.println("Enter student ID to delete: ");
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
                         String deleteID = validator.getValidStudentID();
                         System.out.println("Are you sure you want to delete " + deleteID + "? (y/n): ");
                         String confirm = scanner.nextLine();
                         deleteStudent(deleteID, confirm);
                         break;
                     case 4:  
-<<<<<<< HEAD
-                        //System.out.println("Enter student ID to search: ");
-=======
                         System.out.println("Enter student ID to search: ");
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
                         String searchID = validator.getValidStudentID();
                         searchStudent(searchID);
                         break;
@@ -112,22 +100,6 @@ public class StudentManagement {
     //add new student
     public void addStudent(){
         
-<<<<<<< HEAD
-        //create a new student instance
-        Student newStudent = new Student();
-        
-        //System.out.println("Enter student name : ");
-        newStudent.setName(validator.getValidName());
-        
-        //System.out.println("Enter student major : ");
-        newStudent.setMajor(validator.getValidMajor());
-        
-        //System.out.println("Enter student ID : ");
-        newStudent.setStudentID(validator.getValidStudentID());
-        
-        
-        
-=======
         
         //create a new student instance
         Student newStudent = new Student();
@@ -147,7 +119,6 @@ public class StudentManagement {
         }
         
         newStudent.setStudentID(studentID);
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
        
         //add the student to the list
         studentList.add(newStudent);
@@ -249,10 +220,7 @@ public class StudentManagement {
             studentMap.remove(studentID);
             // update to database
             studentDatabase.writeStudentsToFile(studentList, "students.txt");
-<<<<<<< HEAD
-=======
             EnrollmentManagement.removeEnrollmentForDeletedStudent(studentID);
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
             System.out.println("Student successfully deleted.");
             return true;
         }else{

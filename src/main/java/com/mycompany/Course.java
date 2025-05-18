@@ -15,29 +15,18 @@ public class Course {
     /**
      */
     
-<<<<<<< HEAD
-    // 기본 생성자
-    public Course() {
-    }
-
-    // 매개변수를 받는 생성자
-=======
     // Default constructor
     public Course() {
     }
 
     // Constructor with parameters
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public Course(String courseID, String courseName, int credit) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.credit = credit;
     }
     
-<<<<<<< HEAD
-=======
     // Getter for course name
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public String getCourseName() {
         return courseName;
     }

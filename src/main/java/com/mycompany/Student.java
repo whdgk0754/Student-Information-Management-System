@@ -3,12 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.comp603_assignment1;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.Map;
-=======
 
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
 /**
  *
  * @author jonghapark
@@ -18,23 +13,11 @@ public class Student {
     private String name;
     private String major;
     
-<<<<<<< HEAD
-    
-    
-
-    
-    // 기본 생성자
-    public Student() {
-    }
-
-    // String, String, String을 받는 생성자
-=======
     // Default constructor
     public Student() {
     }
 
     // Constructor that accepts studentID, name, and major
->>>>>>> bde75c149b7a2cf765219ddfc10a478054c1b656
     public Student(String studentID, String name, String major) {
         this.studentID = studentID;
         this.name = name;
