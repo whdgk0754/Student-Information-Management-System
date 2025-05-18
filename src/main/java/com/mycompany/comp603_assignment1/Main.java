@@ -14,12 +14,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+        
         // create instances from each Manangement
         StudentManagement studentManagement = new StudentManagement();
         CourseManagement courseManagement = new CourseManagement();
         EnrollmentManagement enrollmentManagement = new EnrollmentManagement();
-
+        //create each database table
+        DBManager.initializeDatabase();
         int choice = 0;
 
         while (choice != 4) {
