@@ -26,6 +26,7 @@ public class Main {
 
         //create each database table
         DBManager.initializeDatabase();
+        System.out.println("DataBase initalized successfully.");
 
         int choice = 0;
 

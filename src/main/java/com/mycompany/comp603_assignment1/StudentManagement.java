@@ -155,8 +155,10 @@ public class StudentManagement {
     //check studentList is empty
     System.out.println("Current Students: " + studentList.size());
     Student student = studentMap.get(studentID);
+    int input = 0;
         
         if(student != null){
+            while(input != 3){
             System.out.println("Name: " + student.getName());
             System.out.println("Major: " + student.getMajor());
             
@@ -164,8 +166,11 @@ public class StudentManagement {
             System.out.println("1. Student name");
             System.out.println("2. Major");
             System.out.println("3. Exit");
-            int input = scanner.nextInt();
-            switch(input){
+                if(scanner.hasNextInt()){
+                    input = scanner.nextInt();
+                    scanner.nextLine();
+                
+                switch(input){
                 case 1:
                     System.out.print("Enter new name: ");
                     student.setName(validator.getValidName());
@@ -181,6 +186,12 @@ public class StudentManagement {
                     System.out.println("Error: you entered invalid input. Try again.");
                     break;
                  
+            }
+            }else {
+                    System.out.println("Invalid input. Please enter a number.");
+                    scanner.next();// discard invalid input
+                    }
+            
             }
             
              // update to database
