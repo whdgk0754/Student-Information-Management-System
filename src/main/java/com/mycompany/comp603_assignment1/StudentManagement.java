@@ -262,6 +262,19 @@ public class StudentManagement {
         return studentMap.get(studentID);
     }
     
+    //add for StudentPanel class
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public Map<String, Student> getStudentMap() {
+        return studentMap;
+    }
+
+    public StudentDatabaseImpl getStudentDatabase() {
+        return studentDatabase;
+    }
+    
         
 
 }
