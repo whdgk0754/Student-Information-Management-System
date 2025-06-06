@@ -257,4 +257,22 @@ public class CourseManagement {
             System.out.println("Credit: " + course.getCredit());
         }
     }
+    
+    // add for CoursePanel class
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
+    public HashMap<String, Course> getCourseMap() {
+        return courseMap;
+    }
+
+    public CourseDatabaseImpl getCourseDatabase() {
+        return courseDatabase;
+    }
+    
+    public Validator getValidator() {
+        return validator;
+    }
+
 }
