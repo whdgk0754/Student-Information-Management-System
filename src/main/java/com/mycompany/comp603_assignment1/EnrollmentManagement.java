@@ -223,4 +223,36 @@ public class EnrollmentManagement {
             enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
         }
     }
+    
+    //add for EnrollmentPanel class
+
+    public void enrollCourseToStudentFromPanel(String studentID, Course course) {
+        Enrollment enrollment = enrollmentMap.get(studentID);
+        if (enrollment == null) {
+            enrollment = new Enrollment(studentID);
+            enrollmentMap.put(studentID, enrollment);
+        }
+        for (Course c : enrollment.getCourseList()) {
+            if (c.getCourseID().equals(course.getCourseID())) return;
+        }
+        enrollment.addCourseToStudent(course);
+        saveEnrollmentsToFile();
+    }
+
+    public void cancelEnrollmentFromPanel(String studentID, String courseID) {
+        Enrollment enrollment = enrollmentMap.get(studentID);
+        if (enrollment == null) return;
+        enrollment.getCourseList().removeIf(c -> c.getCourseID().equals(courseID));
+        saveEnrollmentsToFile();
+    }
+
+    public List<Course> getEnrolledCourses(String studentID) {
+        Enrollment enrollment = enrollmentMap.get(studentID);
+        return enrollment != null ? enrollment.getCourseList() : new ArrayList<>();
+    }
+
+    public static Map<String, Enrollment> getEnrollmentMap() {
+        return enrollmentMap;
+    }
+
 }
