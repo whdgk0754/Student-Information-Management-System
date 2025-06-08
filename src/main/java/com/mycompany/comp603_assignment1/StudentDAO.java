@@ -16,8 +16,8 @@ import java.sql.ResultSet;
 public class StudentDAO {
     
    
-    
-    public void addStudentFromDB(Student student){
+    //Add student to DB
+    public void addStudent(Student student){
         String sql = "INSERT INTO Student (id, name, major) VALUES (?, ?, ?)";
         try(Connection conn = DBManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)){
@@ -33,7 +33,7 @@ public class StudentDAO {
         }
     }
     
-    public List<Student> getAllStudentFromDB(){
+    public List<Student> getAllStudent(){
         String sql = "SELECT * FROM Student";
         List<Student> students = new ArrayList<>();
         
@@ -75,12 +75,12 @@ public class StudentDAO {
         }
     }
     
-    public void updateStudentFromDB(Student student){
+    public void updateStudent(Student student){
         String sql = "UPDATE Student SET name = ?, major = ? WHERE id = ?";
         try(Connection conn = DBManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)){
             
-            ps.setString(1, student.getStudentID());
+            ps.setString(1, student.getName());
             ps.setString(2, student.getMajor());
             ps.setString(3, student.getStudentID());
             

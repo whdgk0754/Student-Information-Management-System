@@ -15,8 +15,11 @@ public class EnrollmentManagement {
     private static Map<String, Enrollment> enrollmentMap = new HashMap<>();
     
     private static EnrollmentDatabaseImpl enrollmentDatabase = new EnrollmentDatabaseImpl(new FileHandler());
-
+    //connect Enrollment DB
+    private EnrollmentDAO enrollmentDAO = new EnrollmentDAO(); 
     Validator validator = new Validator();
+    
+    
     
     // Constructor - Load enrollment data from file at startup
     public EnrollmentManagement() {
@@ -223,4 +226,17 @@ public class EnrollmentManagement {
             enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
         }
     }
+    
+    //return Mapped DB grouped by studentID
+    public Map<String, List<String>> getGroupedEnrollments(){
+        List<Enrollment> allEnrollments = enrollmentDAO.getAllEnrollments();
+        
+        Map<String, List<String>> grouped = new HashMap<>();
+        for(Enrollment e : allEnrollments){
+            grouped.computeIfAbsent(e.getStudentID(), k-> new ArrayList<>())
+                    .add(e.getCourseID());
+        }
+        return grouped;
+    }
 }
+
