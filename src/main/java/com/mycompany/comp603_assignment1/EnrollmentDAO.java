@@ -33,6 +33,14 @@ public class EnrollmentDAO {
     
     //cancel enrollment
     public void cancelEnrollment(String studentID, String courseID){
+        
+        CourseDAO courseDAO = new CourseDAO();
+        
+        if (!courseDAO.exists(courseID)) {
+        System.out.println("Course ID " + courseID + " does not exist.");
+        return;
+        
+        }
         String sql = "DELETE FROM Enrollment WHERE student_id = ? AND course_id = ?";
         
         try (Connection conn = DBManager.getConnection();

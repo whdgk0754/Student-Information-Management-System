@@ -112,4 +112,18 @@ public class CourseDAO {
         }
         return courses;
     }
+    //check course exists
+    public boolean exists(String courseID) {
+    String sql = "SELECT 1 FROM Course WHERE id = ?";
+    try (Connection conn = DBManager.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, courseID);
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next();  // return true when exists
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 }
