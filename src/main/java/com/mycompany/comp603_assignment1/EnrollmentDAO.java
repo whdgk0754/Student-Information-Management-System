@@ -15,6 +15,7 @@ import java.sql.ResultSet;
  */
 public class EnrollmentDAO {
     
+    //add enrollment
     public void addEnrollment(String studentID, String courseID){
         String sql = "INSERT INTO Enrollment (student_id, course_id) VALUES (?,?)";
         try (Connection conn = DBManager.getConnection();
@@ -30,7 +31,7 @@ public class EnrollmentDAO {
             }
         }
     
-    
+    //cancel enrollment
     public void cancelEnrollment(String studentID, String courseID){
         String sql = "DELETE FROM Enrollment WHERE student_id = ? AND course_id = ?";
         
@@ -74,11 +75,79 @@ public class EnrollmentDAO {
             }
         return enrollments;
     }
-    
-    public List<Enrollment> getEnrollmentByStudent(String studentId){
-        return null;
+    //get enrollment by studentid
+    public List<Enrollment> getEnrollmentByStudent(String studentID){
+        List<Enrollment> enrollments = new ArrayList<>();
+        String sql = "SELECT * FROM Enrollment WHERE student_id = ?";
+        
+        try (Connection conn = DBManager.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, studentID);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String courseID = rs.getString("course_id");
+                enrollments.add(new Enrollment(studentID, courseID));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-    
+        return enrollments;
+    }
+    //check duplicated
+    public boolean isEnrolled(String studentID, String courseID){
+        String sql = "SELECT 1 FROM Enrollment WHERE student_id = ? AND course_id = ?";
+    try (Connection conn = DBManager.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, studentID);
+        ps.setString(2, courseID);
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next(); // return true when enrolled
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+    }
+    //delete all enrollment related to student
+    public void deleteAllByStudent(String studentID){
+         String sql = "DELETE FROM Enrollment WHERE student_id = ?";
+         try (Connection conn = DBManager.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, studentID);
+        int rows = ps.executeUpdate();
+
+        if (rows > 0) {
+            System.out.println("All enrollments deleted for student ID " + studentID);
+        } else {
+            System.out.println("No enrollments found for student ID " + studentID);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    }
+    //delete all enrollment related to course
+    public void deleteAllByCourse(String courseID){
+        String sql = "DELETE FROM Enrollment WHERE course_id = ?";
+        
+        try (Connection conn = DBManager.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, courseID);
+        int rows = ps.executeUpdate();
+
+        if (rows > 0) {
+            System.out.println("All enrollments deleted for course ID " + courseID);
+        } else {
+            System.out.println("No enrollments found for course ID " + courseID);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    }
     } 
     
     
