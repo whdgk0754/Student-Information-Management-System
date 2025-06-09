@@ -15,21 +15,16 @@ import java.util.Iterator;
  * @author jonghapark
  */
 public class StudentManagement {
-    //declare studentList to store all student objects
-    private ArrayList<Student> studentList = new ArrayList<>();
-    private Map<String, Student> studentMap = new HashMap<>();
-    Validator validator = new Validator();
+    private final StudentDAO studentDAO;
+    private final Validator validator;
     
-    // File I/O database
-    private StudentDatabaseImpl studentDatabase = new StudentDatabaseImpl(new FileHandler());
+    
 
     // constructor - loads database
     public StudentManagement() {
-        List<Student> loadedStudents = studentDatabase.readStudentsFromFile("students.txt");
-        for (Student student : loadedStudents) {
-            studentList.add(student);
-            studentMap.put(student.getStudentID(), student);
-        }
+        this.studentDAO = new StudentDAO();
+        this.validator = new Validator();
+        
     }
     
     
@@ -45,9 +40,9 @@ public class StudentManagement {
             System.out.println("1. Add Student");
             System.out.println("2. Update Student");
             System.out.println("3. Delete Student");
-            System.out.println("4. Search Student");
-            System.out.println("5. List All Student");
-            System.out.println("6. Exit to Main Menu");
+            //System.out.println("4. Search Student");
+            System.out.println("4. List All Student");
+            System.out.println("5. Exit to Main Menu");
             System.out.print("Enter your choice: ");
             
             if(scanner.hasNextInt()){
@@ -60,30 +55,17 @@ public class StudentManagement {
                         addStudent();
                         break;
                     case 2:
-                        System.out.println("Enter student ID to update: ");
-                        String updateID = validator.getValidStudentID();
-                        updateStudent(updateID);
+                        updateStudent();
                         break;
                     case 3:
-                        System.out.println("Enter student ID to delete: ");
-                        String deleteID = validator.getValidStudentID();
-                        System.out.println("Are you sure you want to delete " + deleteID + "? (y/n): ");
-                        String confirm = scanner.nextLine();
-                        deleteStudent(deleteID, confirm);
+                        deleteStudent();
                         break;
                     case 4:  
-                        System.out.println("Enter student ID to search: ");
-                        String searchID = validator.getValidStudentID();
-                        searchStudent(searchID);
-                        break;
-                        
-                    case 5:
                         listAllStudents();
                         break;
-                    case 6:
+                    case 5:
                         System.out.println("Exiting Student Management Menu...");
                         break;
-                   
                     default:
                         System.out.println("Invalid choice. Please select a valid option.");
                         
@@ -101,165 +83,88 @@ public class StudentManagement {
     public void addStudent(){
         
         
-        //create a new student instance
-        Student newStudent = new Student();
-        
-        System.out.println("Enter student name : ");
-        newStudent.setName(validator.getValidName());
-        
-        System.out.println("Enter student major : ");
-        newStudent.setMajor(validator.getValidMajor());
-        
-        System.out.println("Enter student ID : ");
-        String studentID = validator.getValidStudentID();
-        
-        if (studentMap.containsKey(studentID)) {
-            System.out.println("Student ID already exists. Cannot add duplicate student.");
+       System.out.println("Enter Student ID:");
+        String id = validator.getValidStudentID();
+
+        if (studentDAO.exists(id)) {
+            System.out.println("Student ID already exists.");
             return;
         }
-        
-        newStudent.setStudentID(studentID);
-       
-        //add the student to the list
-        studentList.add(newStudent);
-        //add the student to the map
-        studentMap.put(newStudent.getStudentID(), newStudent);
-        // save to database
-        studentDatabase.writeStudentsToFile(studentList, "students.txt");
-        //require fuction that links to database 
+        System.out.println("Enter Student Name:");
+        String name = validator.getValidName();
+
+        System.out.println("Enter Student Major:");
+        String major = validator.getValidMajor();
+
+        Student student = new Student(id, name, major);
+        studentDAO.addStudent(student);
         System.out.println("Student added successfully.");
+       
         
     }
     
     //list all students
     public void listAllStudents(){
         
-        if(studentList.isEmpty()){
-            System.out.println("No student found");
-            return; 
+        List<Student> students = studentDAO.getAllStudent();
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
         }
+
         System.out.println("All Students:");
-        for(Student student : studentList){
-            System.out.println("----------------------------");
-            System.out.println("Student ID: " + student.getStudentID());
-            System.out.println("Student Name: " + student.getName());
-            System.out.println("Student Major: " + student.getMajor());
+        for (Student s : students) {
+            System.out.println("ID: " + s.getStudentID());
+            System.out.println("Name: " + s.getName());
+            System.out.println("Major: " + s.getMajor());
+            System.out.println("------------------------");
         }
     }
     
     //update students
-    public void updateStudent(String studentID){
+    public void updateStudent(){
     
-    //load DB and use switch to update
-    Scanner scanner = new Scanner(System.in);
-    //check studentList is empty
-    System.out.println("Current Students: " + studentList.size());
-    Student student = studentMap.get(studentID);
-    int input = 0;
-        
-        if(student != null){
-            while(input != 3){
-            System.out.println("Name: " + student.getName());
-            System.out.println("Major: " + student.getMajor());
-            
-            System.out.println("\nWhich data would you like to update?");
-            System.out.println("1. Student name");
-            System.out.println("2. Major");
-            System.out.println("3. Exit");
-                if(scanner.hasNextInt()){
-                    input = scanner.nextInt();
-                    scanner.nextLine();
-                
-                switch(input){
-                case 1:
-                    System.out.print("Enter new name: ");
-                    student.setName(validator.getValidName());
-                    break;
-                case 2:
-                    System.out.print("Enter new major: ");
-                    student.setMajor(validator.getValidMajor());
-                    break;
-                case 3:
-                    System.out.println("Exit...");
-                    break;
-                default:
-                    System.out.println("Error: you entered invalid input. Try again.");
-                    break;
-                 
-            }
-            }else {
-                    System.out.println("Invalid input. Please enter a number.");
-                    scanner.next();// discard invalid input
-                    }
-            
-            }
-            
-             // update to database
-            studentDatabase.writeStudentsToFile(studentList, "students.txt");
-            
-            System.out.println("Student updated successfully.");
-            
-        }else
-            System.out.println("Student ID is not valid: " + studentID);
-            
-            
-     
+    System.out.println("Enter Student ID to update:");
+        String id = validator.getValidStudentID();
+
+        Student student = studentDAO.searchStudent(id);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        System.out.println("Enter new name:");
+        String name = validator.getValidName();
+
+        System.out.println("Enter new major:");
+        String major = validator.getValidMajor();
+
+        student.setName(name);
+        student.setMajor(major);
+
+        studentDAO.updateStudent(student);
+        System.out.println("Student updated successfully.");
     }
     
     //delete student
-    public boolean deleteStudent(String studentID, String confirm){
+    public void deleteStudent(){
         
-        if(!confirm.equalsIgnoreCase("y")){
-            System.out.println("Deletion cancelled.");
-            return false;
+        System.out.println("Enter Student ID to delete:");
+        String id = validator.getValidStudentID();
+
+        Student student = studentDAO.searchStudent(id);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
         }
-        
-        boolean foundList = false;
-        Iterator<Student> iterator = studentList.iterator();
-        
-        
-        while (iterator.hasNext()){
-            Student s = iterator.next();
-            if(s.getStudentID().equals(studentID)){
-                iterator.remove();
-                foundList = true;
-                break;
-            }
-        }
-        
-        if(foundList){
-            studentMap.remove(studentID);
-            // update to database
-            studentDatabase.writeStudentsToFile(studentList, "students.txt");
-            EnrollmentManagement.removeEnrollmentForDeletedStudent(studentID);
-            System.out.println("Student successfully deleted.");
-            return true;
-        }else{
-            System.out.println("Student Not Found");
-            return false;
-        }
-        
-    
-    }
-    
-    //search student from database and list
-    public void searchStudent(String studentID){
-        
-        Student student = studentMap.get(studentID);
-        if(student != null){
-            System.out.println("Name: " + student.getName());
-        System.out.println("studentID: " + student.getStudentID());
-        System.out.println("Major: " + student.getMajor());
-        }else{
-            System.out.println("Student Not Found with ID: " + studentID);
-            
-        }
-    
+
+        studentDAO.deleteStudent(student);
+        System.out.println("Student deleted successfully.");
     }
     
     //search student from database
-    public Student searchStudentObject(String studentID) {
-        return studentMap.get(studentID);
+    public Student searchStudentObject(String id) {
+        return studentDAO.searchStudent(id); // for other classes like EnrollmentManagement
     }
     
         
