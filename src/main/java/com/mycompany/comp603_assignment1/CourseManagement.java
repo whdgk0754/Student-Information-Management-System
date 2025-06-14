@@ -5,28 +5,42 @@
 package com.mycompany.comp603_assignment1;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 /**
  *
  * @author jonghapark
  */
-public class CourseManagement {
+public class CourseManagement implements IntCourseManagement{
     private final CourseDAO courseDAO;
     private final Validator validator;
+    
+    //add for coursepanel
+    private final List<Course> courseList;
+    private final Map<String, Course> courseMap;
     
     
     // Constructor: Load existing courses from file into list and map
     public CourseManagement() {
         this.courseDAO = new CourseDAO();
         this.validator = new Validator();
+        
+       //add for coursepanel
+        this.courseList = new ArrayList<>();
+        this.courseMap = new HashMap<>();
+        
+        List<Course> loadedCourses = courseDAO.getAllCourses();
+        for (Course c : loadedCourses) {
+            courseList.add(c);
+            courseMap.put(c.getCourseID(), c);
+        }
        
     }
     
     
     
-    // Adds a new course to the system after validation    
+    // Adds a new course to the system after validation   
+    @Override
     public void addCourse(Course course){
         if (!validator.validateCourseCode(course.getCourseID())) {
             throw new IllegalArgumentException("Invalid course code.");
@@ -42,9 +56,13 @@ public class CourseManagement {
         }
         courseDAO.addCourse(course);
         
+        //add for coursepanel
+        courseList.add(course);
+        courseMap.put(course.getCourseID(), course);        
     }
     
     // Updates course name or credit by course    
+    @Override
     public void updateCourse(Course course){
         if (courseDAO.searchCourse(course.getCourseID()) == null) {
             throw new IllegalArgumentException("Course ID not found.");
@@ -53,6 +71,7 @@ public class CourseManagement {
     }
     
     // Deletes a course from the system by ID and confirmation
+    @Override
     public void deleteCourse(String courseID){
         
        Course course = courseDAO.searchCourse(courseID);
@@ -60,31 +79,41 @@ public class CourseManagement {
             throw new IllegalArgumentException("Course ID not found.");
         }
         courseDAO.deleteCourse(course);
+        
+        //add for coursepanel
+        courseList.remove(course);
+        courseMap.remove(courseID);
     }
     
     // Searches for a course and prints details if found
+    @Override
     public Course searchCourse(String courseID) {
         return courseDAO.searchCourse(courseID);
     }
     
-    // Lists all courses stored in the system
-    public List<Course> listAllCourses(){
+    // add for CoursePanel class
+    
+    @Override
+    public List<Course> getAllCourses() {
         return courseDAO.getAllCourses();
     }
     
-    // add for CoursePanel class
+    @Override
     public List<Course> getCourseList() {
         return courseList;
     }
 
-    public HashMap<String, Course> getCourseMap() {
+    @Override
+    public Map<String, Course> getCourseMap() {
         return courseMap;
     }
 
-    public CourseDatabaseImpl getCourseDatabase() {
-        return courseDatabase;
+    @Override
+    public CourseDAO getCourseDatabase() {
+        return courseDAO;
     }
-    
+
+    @Override
     public Validator getValidator() {
         return validator;
     }

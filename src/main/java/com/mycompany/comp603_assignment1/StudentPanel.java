@@ -14,14 +14,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class StudentPanel extends JPanel {
-    private StudentManagement studentManagement;
+    private final IntStudentManagement studentManagement;
     private JTable studentTable;
     private DefaultTableModel tableModel;
     private JTextField idField, nameField, majorField;
 
-    public StudentPanel(StudentManagement studentManagement) {
+    public StudentPanel(IntStudentManagement studentManagement) {
         this.studentManagement = studentManagement;
         setLayout(new BorderLayout());
 
@@ -71,20 +73,27 @@ public class StudentPanel extends JPanel {
                     return;
                 }
 
-                // Check if ID already exists
-                if (studentManagement.searchStudentObject(id) != null) {
-                    showMessage("Student ID already exists.");
+                if (!studentManagement.getValidator().validateStudentID(id)) {
+                    showMessage("Invalid student ID format.");
+                    return;
+                }
+                if (!studentManagement.getValidator().validateName(name)) {
+                    showMessage("Invalid student name.");
+                    return;
+                }
+                if (!studentManagement.getValidator().validateMajor(major)) {
+                    showMessage("Invalid major.");
                     return;
                 }
 
-                // [Fixed] Add student by direct manipulation of fields
-                Student s = new Student(id, name, major);
-                studentManagement.getStudentList().add(s); // [Fixed] Access via getter
-                studentManagement.getStudentMap().put(id, s); // [Fixed] Access via getter
-                studentManagement.getStudentDatabase().writeStudentsToFile(studentManagement.getStudentList(), "students.txt"); // [Fixed] Save using getter
-
-                showMessage("Student added successfully.");
-                loadStudentData();
+                try {
+                    Student s = new Student(id, name, major);
+                    studentManagement.addStudent(s);
+                    showMessage("Student added successfully.");
+                    loadStudentData();
+                } catch (IllegalArgumentException ex) {
+                    showMessage(ex.getMessage());
+                }
             }
         });
 
@@ -101,15 +110,18 @@ public class StudentPanel extends JPanel {
                 String name = nameField.getText().trim();
                 String major = majorField.getText().trim();
 
-                Student student = studentManagement.searchStudentObject(id);
-                if (student != null) {
-                    student.setName(name);
-                    student.setMajor(major);
-                    studentManagement.getStudentDatabase().writeStudentsToFile(studentManagement.getStudentList(), "students.txt"); // [Fixed] Save
+                if (id.isEmpty() || name.isEmpty() || major.isEmpty()) {
+                    showMessage("Please fill all fields.");
+                    return;
+                }
+
+                try {
+                    Student updatedStudent = new Student(id, name, major);
+                    studentManagement.updateStudent(updatedStudent);
                     showMessage("Student updated successfully.");
                     loadStudentData();
-                } else {
-                    showMessage("Student ID not found.");
+                } catch (IllegalArgumentException ex) {
+                    showMessage(ex.getMessage());
                 }
             }
         });
@@ -122,27 +134,28 @@ public class StudentPanel extends JPanel {
                     showMessage("Please select a student to delete.");
                     return;
                 }
+
                 String id = tableModel.getValueAt(selectedRow, 0).toString();
-                Student student = studentManagement.searchStudentObject(id);
-                if (student != null) {
-                    studentManagement.getStudentList().remove(student); // [Fixed] Remove from list
-                    studentManagement.getStudentMap().remove(id); // [Fixed] Remove from map
-                    studentManagement.getStudentDatabase().writeStudentsToFile(studentManagement.getStudentList(), "students.txt"); // [Fixed] Save
+
+                try {
+                    studentManagement.deleteStudent(id);
                     showMessage("Student deleted successfully.");
                     loadStudentData();
-                } else {
-                    showMessage("Student not found.");
+                } catch (IllegalArgumentException ex) {
+                    showMessage(ex.getMessage());
                 }
             }
         });
 
         // Table click loads data into fields
-        studentTable.getSelectionModel().addListSelectionListener(event -> {
-            int row = studentTable.getSelectedRow();
-            if (row >= 0) {
-                idField.setText(tableModel.getValueAt(row, 0).toString());
-                nameField.setText(tableModel.getValueAt(row, 1).toString());
-                majorField.setText(tableModel.getValueAt(row, 2).toString());
+        studentTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                int row = studentTable.getSelectedRow();
+                if (row >= 0) {
+                    idField.setText(tableModel.getValueAt(row, 0).toString());
+                    nameField.setText(tableModel.getValueAt(row, 1).toString());
+                    majorField.setText(tableModel.getValueAt(row, 2).toString());
+                }
             }
         });
     }
@@ -150,7 +163,8 @@ public class StudentPanel extends JPanel {
     // Load student data into table
     private void loadStudentData() {
         tableModel.setRowCount(0);
-        for (Student s : studentManagement.getStudentList()) { // [Fixed] Accessing internal list
+        List<Student> students = studentManagement.getStudentList();
+        for (Student s : students) {
             tableModel.addRow(new Object[]{s.getStudentID(), s.getName(), s.getMajor()});
         }
     }

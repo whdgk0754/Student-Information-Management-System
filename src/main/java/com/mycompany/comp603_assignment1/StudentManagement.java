@@ -3,15 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.comp603_assignment1;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 /**
  *
  * @author jonghapark
  */
-public class StudentManagement {
+public class StudentManagement implements IntStudentManagement{
     private final StudentDAO studentDAO;
     private final Validator validator;
+    
+    //add for studentpanel
+    private final List<Student> studentList;
+    private final Map<String, Student> studentMap;
     
     
 
@@ -19,6 +25,16 @@ public class StudentManagement {
     public StudentManagement() {
         this.studentDAO = new StudentDAO();
         this.validator = new Validator();
+        
+        //add for studentpanel
+        this.studentList = new ArrayList<>();
+        this.studentMap = new HashMap<>();
+
+        List<Student> loadedStudents = studentDAO.getAllStudent();
+        for (Student s : loadedStudents) {
+            studentList.add(s);
+            studentMap.put(s.getStudentID(), s);
+        }
         
     }
     
@@ -42,17 +58,16 @@ public class StudentManagement {
         }
         studentDAO.addStudent(student);
         
-    }
-    
-    //list all students
-    public List<Student> listAllStudents(){
-        return studentDAO.getAllStudent();
+        //add for studentpanel
+        studentList.add(student);       
+        studentMap.put(student.getStudentID(), student);
+        
     }
     
     //update students
     public void updateStudent(Student student){
     
-    if (studentDAO.searchStudent(student.getStudentID()) == null) {
+        if (studentDAO.searchStudent(student.getStudentID()) == null) {
             throw new IllegalArgumentException("Student ID not found.");
         }
         studentDAO.updateStudent(student);
@@ -66,27 +81,42 @@ public class StudentManagement {
             throw new IllegalArgumentException("Student ID not found.");
         }
         studentDAO.deleteStudent(student);
+        
+        //aad for studentpanel
+        studentList.remove(student);      
+        studentMap.remove(studentID); 
     }
     
     //search student from database
-    public Student searchStudentObject(String id) {
-        return studentDAO.searchStudent(id); 
+    public Student searchStudentObject(String studentID) {
+        return studentDAO.searchStudent(studentID); 
     }
     
     //add for StudentPanel class
+    @Override
+    public List<Student> getAllStudents() {
+        return studentDAO.getAllStudent();
+    }
+
+    @Override
     public List<Student> getStudentList() {
         return studentList;
     }
 
+    @Override
     public Map<String, Student> getStudentMap() {
         return studentMap;
     }
 
-    public StudentDatabaseImpl getStudentDatabase() {
-        return studentDatabase;
+    @Override
+    public StudentDAO getStudentDatabase() {
+        return studentDAO;
     }
-    
-        
+
+    @Override
+    public Validator getValidator() {
+        return validator;
+    } 
 
 }
 

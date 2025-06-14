@@ -14,14 +14,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class CoursePanel extends JPanel {
-    private CourseManagement courseManagement;
+    private final IntCourseManagement courseManagement;
     private JTable courseTable;
     private DefaultTableModel tableModel;
     private JTextField idField, nameField, creditField;
 
-    public CoursePanel(CourseManagement courseManagement) {
+    public CoursePanel(IntCourseManagement courseManagement) {
         this.courseManagement = courseManagement;
         setLayout(new BorderLayout());
 
@@ -76,17 +78,14 @@ public class CoursePanel extends JPanel {
                     return;
                 }
 
-                if (courseManagement.searchCourse(id) != null) {
-                    showMessage("Course ID already exists.");
-                    return;
+                try {
+                    Course course = new Course(id, name, Integer.parseInt(creditText));
+                    courseManagement.addCourse(course);
+                    showMessage("Course added successfully.");
+                    loadCourseData();
+                } catch (IllegalArgumentException ex) {
+                    showMessage(ex.getMessage());
                 }
-
-                Course course = new Course(id, name, Integer.parseInt(creditText));
-                courseManagement.getCourseList().add(course); // Add to list
-                courseManagement.getCourseMap().put(id, course); // Add to map
-                courseManagement.getCourseDatabase().writeCoursesToFile(courseManagement.getCourseList(), "courses.txt"); // Save to file
-                showMessage("Course added successfully.");
-                loadCourseData();
             }
         });
 
@@ -103,15 +102,13 @@ public class CoursePanel extends JPanel {
                 String name = nameField.getText().trim();
                 String creditText = creditField.getText().trim();
 
-                Course course = courseManagement.searchCourse(id);
-                if (course != null) {
-                    course.setCourseName(name);
-                    course.setCredit(Integer.parseInt(creditText));
-                    courseManagement.getCourseDatabase().writeCoursesToFile(courseManagement.getCourseList(), "courses.txt"); // Save to file
+                try {
+                    Course course = new Course(id, name, Integer.parseInt(creditText));
+                    courseManagement.updateCourse(course);
                     showMessage("Course updated successfully.");
                     loadCourseData();
-                } else {
-                    showMessage("Course ID not found.");
+                } catch (IllegalArgumentException ex) {
+                    showMessage(ex.getMessage());
                 }
             }
         });
@@ -126,29 +123,29 @@ public class CoursePanel extends JPanel {
                 }
 
                 String id = tableModel.getValueAt(selectedRow, 0).toString();
-                Course course = courseManagement.searchCourse(id);
-                if (course != null) {
-                    courseManagement.getCourseList().remove(course); // Remove from list
-                    courseManagement.getCourseMap().remove(id); // Remove from map
-                    courseManagement.getCourseDatabase().writeCoursesToFile(courseManagement.getCourseList(), "courses.txt"); // Save to file
+                try {
+                    courseManagement.deleteCourse(id);
                     showMessage("Course deleted successfully.");
                     loadCourseData();
-                } else {
-                    showMessage("Course not found.");
+                } catch (IllegalArgumentException ex) {
+                    showMessage(ex.getMessage());
                 }
             }
         });
 
         // Table click loads data into fields
-        courseTable.getSelectionModel().addListSelectionListener(event -> {
-            int row = courseTable.getSelectedRow();
-            if (row >= 0) {
-                idField.setText(tableModel.getValueAt(row, 0).toString());
-                nameField.setText(tableModel.getValueAt(row, 1).toString());
-                creditField.setText(tableModel.getValueAt(row, 2).toString());
+        courseTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                int row = courseTable.getSelectedRow();
+                if (row >= 0) {
+                    idField.setText(tableModel.getValueAt(row, 0).toString());
+                    nameField.setText(tableModel.getValueAt(row, 1).toString());
+                    creditField.setText(tableModel.getValueAt(row, 2).toString());
+                }
             }
         });
-    }
+}
 
     // Load course data into table
     private void loadCourseData() {

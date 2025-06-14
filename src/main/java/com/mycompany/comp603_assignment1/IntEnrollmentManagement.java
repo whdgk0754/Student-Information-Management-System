@@ -10,11 +10,23 @@ import java.util.Map;
  * @author jonghapark
  */
 public interface IntEnrollmentManagement {
-    void enrollCourse(String studentID, String courseID);
+    void enrollCourseToStudent(String studentID, String courseID);
     void cancelEnrollment(String studentID, String courseID);
-    List<Enrollment> getEnrollmentsByStudent(String studentID);
+    List<Enrollment> listAllEnrollments(String studentID);
     List<Enrollment> getAllEnrollments();
     Map<String, List<String>> getGroupedEnrollments();
-    void removeAllEnrollmentsByStudent(String studentID);
-    void removeAllEnrollmentsByCourse(String courseID);
+    void removeStudentFromAllEnrollments(String studentID);
+    void removeCourseFromAllEnrollments(String courseID);
+    
+
+    List<Course> getEnrolledCourses(String studentID);
+
+    EnrollmentDAO getEnrollmentDatabase();
+    Validator getValidator();
+    List<Enrollment> getEnrollmentList();
+    Map<String, Enrollment> getEnrollmentMap();
+    
+    void viewStudentCourses(String studentID);
+    
+    
 }
