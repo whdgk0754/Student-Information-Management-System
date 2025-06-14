@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Enrollment {
     private String studentID;
     private List<Course> courseList = new ArrayList<>();
-    
+    private String courseID;
     
     Enrollment(String studentID){
         this.studentID = studentID;
@@ -43,7 +43,10 @@ public class Enrollment {
     public List<Course> getCourseList(){
         return courseList;
     }
-    
+    //return this courseID
+    public String getCourseID(){
+        return courseID;
+    }
     //add courses to this student
     public void addCourseToStudent(Course course){
             courseList.add(course);

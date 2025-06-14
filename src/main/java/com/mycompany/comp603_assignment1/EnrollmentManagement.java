@@ -12,108 +12,46 @@ import java.util.*;
 
 public class EnrollmentManagement {
 
-    private static Map<String, Enrollment> enrollmentMap = new HashMap<>();
     
-    private static EnrollmentDatabaseImpl enrollmentDatabase = new EnrollmentDatabaseImpl(new FileHandler());
-
-    Validator validator = new Validator();
+    //connect Enrollment DB
+    private final EnrollmentDAO enrollmentDAO;
+    private final CourseDAO courseDAO;
+    private final StudentDAO studentDAO;
+    private final Validator validator;
+    
+    
     
     // Constructor - Load enrollment data from file at startup
     public EnrollmentManagement() {
-        List<Enrollment> loadedEnrollments = enrollmentDatabase.readEnrollmentsFromFile("enrollments.txt");
-        for (Enrollment enrollment : loadedEnrollments) {
-            enrollmentMap.put(enrollment.getStudentID(), enrollment);
-        }
+        this.enrollmentDAO = new EnrollmentDAO();
+        this.courseDAO = new CourseDAO();
+        this.studentDAO = new StudentDAO();
+        this.validator = new Validator();
     }
 
-    // Main menu for enrollment management
-    public void enrollmentManagementMenu(StudentManagement studentManagement, CourseManagement courseManagement) {
-        Scanner scanner = new Scanner(System.in);
-        
-        int choice = 0;
-
-        while (choice != 5) {
-            System.out.println("\n=== Enrollment Management Menu ===");
-            System.out.println("1. Enroll Course to Student");
-            System.out.println("2. View Student Courses");
-            System.out.println("3. Cancel Student Course Enrollment");
-            System.out.println("4. List All Enrollments");
-            System.out.println("5. Exit to Main Menu");
-            System.out.print("Enter your choice: ");
-
-            if (scanner.hasNextInt()) {
-                choice = scanner.nextInt();
-                scanner.nextLine(); // clean buffer
-
-                switch (choice) {
-                    case 1:
-                        enrollCourseToStudent(studentManagement, courseManagement);
-                        break;
-                    case 2:
-                        viewStudentCourses();
-                        break;
-                    case 3:
-                        cancelEnrollment();
-                        break;
-                    case 4:
-                        listAllEnrollments();
-                        break;
-                    case 5:
-                        System.out.println("Exiting Enrollment Management Menu...");
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
-                }
-            } else {
-                System.out.println("Invalid input. Please enter a number.");
-                scanner.next();
-            }
-        }
-    }
+    
 
     // Enroll a course to a student
-    public void enrollCourseToStudent(StudentManagement studentManagement, CourseManagement courseManagement) {
+    public void enrollCourseToStudent(String studentID, String courseID) {
         
        
 
-        System.out.println("Enter Student ID:");
-        String studentID = validator.getValidStudentID();
-
-        if (studentManagement.searchStudentObject(studentID) == null) {
-            System.out.println("Student not found.");
-            return;
+        if (!validator.validateStudentID(studentID)) {
+            throw new IllegalArgumentException("Invalid student ID.");
         }
-
-        Enrollment enrollment = enrollmentMap.get(studentID);
-        if (enrollment == null) {
-            enrollment = new Enrollment(studentID);
-            enrollmentMap.put(studentID, enrollment);
+        if (!validator.validateCourseCode(courseID)) {
+            throw new IllegalArgumentException("Invalid course ID.");
         }
-
-        System.out.println("Enter Course ID to enroll:");
-        String courseID = validator.getValidCourseCode();
-
-        Course course = courseManagement.searchCourse(courseID);
-        if (course == null) {
-            System.out.println("Course not found.");
-            return;
+        if (studentDAO.searchStudent(studentID) == null) {
+            throw new IllegalArgumentException("Student does not exist.");
         }
-        
-        // Check if the student is already enrolled in the course      
-        for (Course c : enrollment.getCourseList()) {
-            if (c.getCourseID().equals(courseID)) {
-                System.out.println("Student already enrolled in this course.");
-                return;
-            }
+        if (courseDAO.searchCourse(courseID) == null) {
+            throw new IllegalArgumentException("Course does not exist.");
         }
-
-        enrollment.addCourseToStudent(course);
-
-        // Save the updated enrollments to file
-        enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
-
-        System.out.println("Course successfully enrolled for student " + studentID + ".");
-        
+        if (enrollmentDAO.isEnrolled(studentID, courseID)) {
+            throw new IllegalArgumentException("Student already enrolled in this course.");
+        }
+        enrollmentDAO.addEnrollment(studentID, courseID);
     }
 
     // View courses that a student has enrolled in
@@ -121,107 +59,58 @@ public class EnrollmentManagement {
         
         System.out.println("Enter Student ID:");
         String studentID = validator.getValidStudentID();
-
-        Enrollment enrollment = enrollmentMap.get(studentID);
-        if (enrollment == null) {
+        
+        List<Enrollment> enrollments = enrollmentDAO.getEnrollmentByStudent(studentID);
+        
+        if (enrollments.isEmpty()) {
             System.out.println("Student not found or no enrollment record.");
             return;
         }
 
-        List<Course> courses = enrollment.getCourseList();
-        if (courses.isEmpty()) {
-            System.out.println("No courses enrolled for this student.");
-        } else {
+        
+        
+       
             System.out.println("Courses enrolled by student " + studentID + ":");
-            for (Course course : courses) {
-                System.out.println("- " + " (" + course.getCourseID() + ")");
+            for (Enrollment e  : enrollments) {
+                System.out.println("- " + " (" + e.getCourseID() + ")");
             }
-        }
+        
     }
 
     // Cancel a course enrollment for a student
-    public void cancelEnrollment() {
+    public void cancelEnrollment(String studentID, String courseID) {
        
-
-        System.out.println("Enter Student ID:");
-        String studentID = validator.getValidStudentID();
-
-        Enrollment enrollment = enrollmentMap.get(studentID);
-        if (enrollment == null) {
-            System.out.println("Student not found or no enrollment record.");
-            return;
-        }
+        enrollmentDAO.cancelEnrollment(studentID, courseID);
         
-        if (enrollment.getCourseList().isEmpty()) {
-            System.out.println("Student has no enrolled courses to cancel.");
-            return;
-        }
-
-        System.out.println("Enter Course ID to cancel:");
-        String courseID = validator.getValidCourseCode();
-
-        boolean found = false;
-        Iterator<Course> iterator = enrollment.getCourseList().iterator();
-        while (iterator.hasNext()) {
-            Course course = iterator.next();
-            if (course.getCourseID().equals(courseID)) {
-                iterator.remove();
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
-            System.out.println("Course enrollment cancelled for student " + studentID + ".");
-        } else {
-            System.out.println("The student is not enrolled in the course ID: " + courseID + ".");
-        }
     }
 
-    // List all enrollments for all students
-    public void listAllEnrollments() {
-        if (enrollmentMap.isEmpty()) {
-            System.out.println("No enrollment records found.");
-            return;
-        }
-        
-        
-        System.out.println("All Enrollments:");
-        for (Enrollment enrollment : enrollmentMap.values()) {
-            System.out.println("----------------------------");
-            System.out.println("Student ID: " + enrollment.getStudentID());
-            for (Course course : enrollment.getCourseList()) {
-                System.out.println("- " + " (" + course.getCourseID() + ")");
-                
-            }
-        }
+    // Get all enrollments for by student ID
+    public List<Enrollment> listAllEnrollments(String studentID) {
+         return enrollmentDAO.getEnrollmentByStudent(studentID);
     }
-    // Save enrollment map to file
-    private void saveEnrollmentsToFile() {
-        enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
+    
+    // Get all enrollments
+    public List<Enrollment> getAllEnrollments() {
+        return enrollmentDAO.getAllEnrollments();
+    }
+    //method to remove a student from all enrollment when the course is deleted
+    public void removeStudentFromAllEnrollments(String studentID) {
+        enrollmentDAO.deleteAllByStudent(studentID);
     }
 
-    // Static method to remove enrollments for a deleted student
-    public static void removeEnrollmentForDeletedStudent(String studentID) {
-        if (enrollmentMap.containsKey(studentID)) {
-            enrollmentMap.remove(studentID);
-            enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
-        }
+    //method to remove a course from all students when the course is deleted
+    public void removeCourseFromAllEnrollments(String courseID) {
+        enrollmentDAO.deleteAllByCourse(courseID);
     }
-
-
-    // Static method to remove a course from all students when the course is deleted
-    public static void removeCourseFromAllEnrollments(String courseID) {
-        boolean changed = false;
-        for (Enrollment enrollment : enrollmentMap.values()) {
-            if (enrollment.getCourseList().removeIf(course -> course.getCourseID().equals(courseID))) {
-                changed = true;
-            }
+    
+    //return Mapped DB grouped by studentID
+    public Map<String, List<String>> getGroupedEnrollments(){
+        List<Enrollment> all = enrollmentDAO.getAllEnrollments();
+        Map<String, List<String>> grouped = new HashMap<>();
+        for (Enrollment e : all) {
+            grouped.computeIfAbsent(e.getStudentID(), k -> new ArrayList<>()).add(e.getCourseID());
         }
-        if (changed) {
-            enrollmentDatabase.writeEnrollmentsToFile(new ArrayList<>(enrollmentMap.values()), "enrollments.txt");
-        }
+        return grouped;
     }
     
     //add for EnrollmentPanel class
