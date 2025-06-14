@@ -97,7 +97,7 @@ public class StudentDAO {
         }
     }
     
-    public Student searchStudentFromDB(String studentID ){
+    public Student searchStudent(String studentID ){
         String sql = "SELECT * FROM Student WHERE id = ?";
         try (Connection conn = DBManager.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -114,6 +114,21 @@ public class StudentDAO {
         e.printStackTrace();
     }
         return null; //not found
+}
+    
+    //check student exists
+    public boolean exists(String studentID) {
+    String sql = "SELECT 1 FROM Student WHERE id = ?";
+    try (Connection conn = DBManager.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, studentID);
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next();  // return true when exists
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
 }
 }
 

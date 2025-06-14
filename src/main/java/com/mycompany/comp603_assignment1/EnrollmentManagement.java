@@ -14,97 +14,44 @@ public class EnrollmentManagement {
 
     
     //connect Enrollment DB
-    private EnrollmentDAO enrollmentDAO = new EnrollmentDAO(); 
+    private final EnrollmentDAO enrollmentDAO;
     private final CourseDAO courseDAO;
     private final StudentDAO studentDAO;
-    Validator validator = new Validator();
+    private final Validator validator;
     
     
     
     // Constructor - Load enrollment data from file at startup
     public EnrollmentManagement() {
         this.enrollmentDAO = new EnrollmentDAO();
-        this.courseDAO = new CourseDAO();     // check exist
-        this.studentDAO = new StudentDAO();   // check exist
+        this.courseDAO = new CourseDAO();
+        this.studentDAO = new StudentDAO();
+        this.validator = new Validator();
     }
 
-    // Main menu for enrollment management
-    public void enrollmentManagementMenu(StudentManagement studentManagement, CourseManagement courseManagement) {
-        Scanner scanner = new Scanner(System.in);
-        
-        int choice = 0;
-
-        while (choice != 5) {
-            System.out.println("\n=== Enrollment Management Menu ===");
-            System.out.println("1. Enroll Course to Student");
-            System.out.println("2. View Student Courses");
-            System.out.println("3. Cancel Student Course Enrollment");
-            System.out.println("4. List All Enrollments");
-            System.out.println("5. Exit to Main Menu");
-            System.out.print("Enter your choice: ");
-
-            if (scanner.hasNextInt()) {
-                choice = scanner.nextInt();
-                scanner.nextLine(); // clean buffer
-
-                switch (choice) {
-                    case 1:
-                        enrollCourseToStudent(studentManagement, courseManagement);
-                        break;
-                    case 2:
-                        viewStudentCourses();
-                        break;
-                    case 3:
-                        cancelEnrollment();
-                        break;
-                    case 4:
-                        listAllEnrollments();
-                        break;
-                    case 5:
-                        System.out.println("Exiting Enrollment Management Menu...");
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
-                }
-            } else {
-                System.out.println("Invalid input. Please enter a number.");
-                scanner.next();
-            }
-        }
-    }
+    
 
     // Enroll a course to a student
-    public void enrollCourseToStudent(StudentManagement studentManagement, CourseManagement courseManagement) {
+    public void enrollCourseToStudent(String studentID, String courseID) {
         
        
 
-        System.out.println("Enter Student ID:");
-        String studentID = validator.getValidStudentID();
-
-        if (studentManagement.searchStudentObject(studentID) == null) {
-            System.out.println("Student not found.");
-            return;
+        if (!validator.validateStudentID(studentID)) {
+            throw new IllegalArgumentException("Invalid student ID.");
         }
-
-       
-        System.out.println("Enter Course ID to enroll:");
-        String courseID = validator.getValidCourseCode();
-
-        
-        if (courseManagement.searchCourse(courseID) == null) {
-            System.out.println("Course not found.");
-            return;
+        if (!validator.validateCourseCode(courseID)) {
+            throw new IllegalArgumentException("Invalid course ID.");
         }
-        
-        // Check if the student is already enrolled in the course      
-        if(enrollmentDAO.isEnrolled(studentID, courseID)){
-            System.out.println("Student already enrolled in this course.");
-            return;
+        if (studentDAO.searchStudent(studentID) == null) {
+            throw new IllegalArgumentException("Student does not exist.");
         }
-
-       enrollmentDAO.addEnrollment(studentID, courseID);
-        System.out.println("Course successfully enrolled for student " + studentID + ".");
-        
+        if (courseDAO.searchCourse(courseID) == null) {
+            throw new IllegalArgumentException("Course does not exist.");
+        }
+        if (enrollmentDAO.isEnrolled(studentID, courseID)) {
+            throw new IllegalArgumentException("Student already enrolled in this course.");
+        }
+        enrollmentDAO.addEnrollment(studentID, courseID);
     }
 
     // View courses that a student has enrolled in
@@ -131,45 +78,21 @@ public class EnrollmentManagement {
     }
 
     // Cancel a course enrollment for a student
-    public void cancelEnrollment() {
+    public void cancelEnrollment(String studentID, String courseID) {
        
-        System.out.println("Enter Student ID:");
-        String studentID = validator.getValidStudentID();
-
-        System.out.println("Enter Course ID to cancel:");
-        String courseID = validator.getValidCourseCode();
-        
         enrollmentDAO.cancelEnrollment(studentID, courseID);
         
     }
 
-    // List all enrollments for all students
-    public void listAllEnrollments() {
-         List<Enrollment> allEnrollments = enrollmentDAO.getAllEnrollments();
-
-    if (allEnrollments.isEmpty()) {
-        System.out.println("No enrollment records found.");
-        return;
-    }
-
-    // Group by student ID
-    Map<String, List<String>> grouped = new HashMap<>();
-    for (Enrollment e : allEnrollments) {
-        grouped.computeIfAbsent(e.getStudentID(), k -> new ArrayList<>())
-               .add(e.getCourseID());
-    }
-
-    // Print by grouped enrollment
-    System.out.println("All Enrollments:");
-    for (Map.Entry<String, List<String>> entry : grouped.entrySet()) {
-        System.out.println("----------------------------");
-        System.out.println("Student ID: " + entry.getKey());
-        for (String courseId : entry.getValue()) {
-            System.out.println("- Course ID: " + courseId);
-        }
-    }
+    // Get all enrollments for by student ID
+    public List<Enrollment> listAllEnrollments(String studentID) {
+         return enrollmentDAO.getEnrollmentByStudent(studentID);
     }
     
+    // Get all enrollments
+    public List<Enrollment> getAllEnrollments() {
+        return enrollmentDAO.getAllEnrollments();
+    }
     //method to remove a student from all enrollment when the course is deleted
     public void removeStudentFromAllEnrollments(String studentID) {
         enrollmentDAO.deleteAllByStudent(studentID);
@@ -182,12 +105,10 @@ public class EnrollmentManagement {
     
     //return Mapped DB grouped by studentID
     public Map<String, List<String>> getGroupedEnrollments(){
-        List<Enrollment> allEnrollments = enrollmentDAO.getAllEnrollments();
-        
+        List<Enrollment> all = enrollmentDAO.getAllEnrollments();
         Map<String, List<String>> grouped = new HashMap<>();
-        for(Enrollment e : allEnrollments){
-            grouped.computeIfAbsent(e.getStudentID(), k-> new ArrayList<>())
-                    .add(e.getCourseID());
+        for (Enrollment e : all) {
+            grouped.computeIfAbsent(e.getStudentID(), k -> new ArrayList<>()).add(e.getCourseID());
         }
         return grouped;
     }
