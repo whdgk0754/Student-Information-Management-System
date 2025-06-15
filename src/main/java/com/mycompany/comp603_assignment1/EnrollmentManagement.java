@@ -139,8 +139,8 @@ public class EnrollmentManagement implements IntEnrollmentManagement {
     //add for EnrollmentPanel class
     @Override
     public List<Course> getEnrolledCourses(String studentID) {
-        Enrollment enrollment = enrollmentMap.get(studentID);
-        return enrollment != null ? enrollment.getCourseList() : new ArrayList<>();
+        
+        return enrollmentDAO.getCoursesByStudentID(studentID);
     }
 
     @Override
@@ -150,7 +150,20 @@ public class EnrollmentManagement implements IntEnrollmentManagement {
 
     @Override
     public Map<String, Enrollment> getEnrollmentMap() {
-        return enrollmentMap;
+        List<Enrollment> enrollments = enrollmentDAO.getAllEnrollments(); 
+        Map<String, Enrollment> map = new HashMap<>();
+
+        for (Enrollment e : enrollments) {
+        String studentID = e.getStudentID();
+        if (!map.containsKey(studentID)) {
+            map.put(studentID, new Enrollment(studentID));
+        }
+        for (Course c : e.getCourseList()) {
+            map.get(studentID).addCourseToStudent(c);
+        }
+    }
+
+    return map;
     }
 
     @Override

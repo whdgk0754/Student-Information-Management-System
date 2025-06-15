@@ -82,7 +82,7 @@ public class StudentManagement implements IntStudentManagement{
         }
         studentDAO.deleteStudent(student);
         
-        //aad for studentpanel
+        //add for studentpanel
         studentList.remove(student);      
         studentMap.remove(studentID); 
     }
@@ -100,7 +100,7 @@ public class StudentManagement implements IntStudentManagement{
 
     @Override
     public List<Student> getStudentList() {
-        return studentList;
+        return studentDAO.getAllStudent();
     }
 
     @Override

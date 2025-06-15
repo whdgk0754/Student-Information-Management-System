@@ -100,7 +100,7 @@ public class CourseManagement implements IntCourseManagement{
     
     @Override
     public List<Course> getCourseList() {
-        return courseList;
+        return courseDAO.getAllCourses();
     }
 
     @Override
