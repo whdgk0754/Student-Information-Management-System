@@ -19,14 +19,17 @@ import javax.swing.event.ListSelectionEvent;
 
 public class StudentPanel extends JPanel {
     private final IntStudentManagement studentManagement;
+    private final EnrollmentPanel enrollmentPanel;
     private JTable studentTable;
     private DefaultTableModel tableModel;
     private JTextField idField, nameField, majorField;
 
-    public StudentPanel(IntStudentManagement studentManagement) {
+    public StudentPanel(IntStudentManagement studentManagement, EnrollmentPanel enrollmentPanel) {
         this.studentManagement = studentManagement;
         setLayout(new BorderLayout());
-
+        this.enrollmentPanel = enrollmentPanel;
+        
+        
         // Top input panel
         JPanel inputPanel = new JPanel(new GridLayout(3, 2));
         inputPanel.add(new JLabel("Student ID:"));
@@ -141,6 +144,8 @@ public class StudentPanel extends JPanel {
                     studentManagement.deleteStudent(id);
                     showMessage("Student deleted successfully.");
                     loadStudentData();
+                    
+                    enrollmentPanel.refreshTable();
                 } catch (IllegalArgumentException ex) {
                     showMessage(ex.getMessage());
                 }

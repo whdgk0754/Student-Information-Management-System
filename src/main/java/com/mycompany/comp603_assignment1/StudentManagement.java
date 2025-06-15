@@ -76,10 +76,14 @@ public class StudentManagement implements IntStudentManagement{
     //delete student
     public void deleteStudent(String studentID){
         
+        
+        
         Student student = studentDAO.searchStudent(studentID);
         if (student == null) {
             throw new IllegalArgumentException("Student ID not found.");
         }
+        EnrollmentDAO enrollmentDAO = new EnrollmentDAO();
+        enrollmentDAO.deleteAllByStudent(studentID);
         studentDAO.deleteStudent(student);
         
         //add for studentpanel

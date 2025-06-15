@@ -171,5 +171,9 @@ public class EnrollmentPanel extends JPanel {
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+    //refreshTable
+    public void refreshTable() {
+    loadEnrollmentData();
+}
 }
 
