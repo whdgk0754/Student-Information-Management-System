@@ -17,6 +17,8 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+        //create DB
+        DBManager.initializeDatabase();
         // Run GUI inside the Event Dispatch Thread (recommended for Swing applications)
         SwingUtilities.invokeLater(() -> {
             // Create the main application window

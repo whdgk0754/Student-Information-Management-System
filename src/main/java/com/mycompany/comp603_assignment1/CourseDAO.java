@@ -15,7 +15,7 @@ import java.sql.ResultSet;
  */
 public class CourseDAO {
     public void addCourse(Course course){
-        String sql = "INSERT INTO Course (id, title, credits) VALUES (?,?,?)";
+        String sql = "INSERT INTO Course (course_id, title, credits) VALUES (?,?,?)";
         try(Connection conn = DBManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)){
             
@@ -31,7 +31,7 @@ public class CourseDAO {
     }
     
     public void deleteCourse(Course course){
-        String sql = "DELETE FROM Course WHERE id = ?";
+        String sql = "DELETE FROM Course WHERE course_id = ?";
         try(Connection conn = DBManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)){
             
@@ -49,7 +49,7 @@ public class CourseDAO {
         }
     }
     public void updateCourse(Course course){
-        String sql = "UPDATE Course SET title = ?, credits = ? WHERE id = ?";
+        String sql = "UPDATE Course SET title = ?, credits = ? WHERE course_id = ?";
         try(Connection conn = DBManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)){
             
@@ -69,13 +69,13 @@ public class CourseDAO {
         }
     }
     public Course searchCourse(String courseID){
-        String sql = "SELECT * FROM Course WHERE id = ?";
+        String sql = "SELECT * FROM Course WHERE course_id = ?";
         try (Connection conn = DBManager.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, courseID);
         try (ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
-                String id = rs.getString("id");
+                String id = rs.getString("course_id");
                 String title = rs.getString("title");
                 int credits = rs.getInt("credits");
                 return new Course(id, title, credits);
@@ -97,7 +97,7 @@ public class CourseDAO {
            ResultSet rs = ps.executeQuery();
            
            while(rs.next()){
-               String id = rs.getString("id");
+               String id = rs.getString("course_id");
                String title = rs.getString("title");
                int credits = rs.getInt("credits");
                
@@ -114,7 +114,7 @@ public class CourseDAO {
     }
     //check course exists
     public boolean exists(String courseID) {
-    String sql = "SELECT 1 FROM Course WHERE id = ?";
+    String sql = "SELECT 1 FROM Course WHERE course_id = ?";
     try (Connection conn = DBManager.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, courseID);

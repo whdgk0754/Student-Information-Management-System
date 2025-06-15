@@ -33,7 +33,7 @@ public class DBManager {
             //create Course table
             st.executeUpdate("""
                 CREATE TABLE Course (
-                id INT PRIMARY KEY,
+                course_id VARCHAR(10) PRIMARY KEY,
                 title VARCHAR(100),
                 credits INT
                              )
@@ -44,10 +44,10 @@ public class DBManager {
             st.executeUpdate("""
                 CREATE TABLE Enrollment (
                 student_id INT,
-                course_id INT,
+                course_id VARCHAR(10),
                 PRIMARY KEY(student_id, course_id), 
-                FOREIGN KEY(student_id REFERENCES Student(id), 
-                FOREIGN KEY(course_id REFERENCES Course(id),             
+                CONSTRAINT fk_student FOREIGN KEY (student_id) REFERENCES Student(id),
+                CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES Course(course_id)            
                              
                                           )
                              
