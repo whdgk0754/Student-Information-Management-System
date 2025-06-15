@@ -8,6 +8,7 @@
  * @author jonghapark
  */
 //header for test
+//make sure clear DB then run test
 //make sure run project first then run test
 import com.mycompany.comp603_assignment1.Student;
 import com.mycompany.comp603_assignment1.StudentManagement;

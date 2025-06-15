@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Comp603Test" time="0.317" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Comp603Test" time="0.33" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,10 +13,9 @@
     <property name="user.country" value="NZ"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/surefire/surefirebooter-20250615205227805_3.jar /Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/surefire 2025-06-15T20-52-27_769-jvmRun1 surefire-20250615205227805_1tmp surefire_0-20250615205227805_2tmp"/>
+    <property name="sun.java.command" value="/Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/surefire/surefirebooter-20250615210812271_3.jar /Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/surefire 2025-06-15T21-08-12_232-jvmRun1 surefire-20250615210812271_1tmp surefire_0-20250615210812271_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
-    <property name="test" value="Comp603Test"/>
     <property name="surefire.test.class.path" value="/Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/test-classes:/Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/classes:/Users/jonghapark/.m2/repository/org/apache/derby/derby/10.15.2.0/derby-10.15.2.0.jar:/Users/jonghapark/.m2/repository/org/apache/derby/derbyshared/10.15.2.0/derbyshared-10.15.2.0.jar:/Users/jonghapark/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.0/junit-jupiter-5.10.0.jar:/Users/jonghapark/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar:/Users/jonghapark/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/jonghapark/.m2/repository/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar:/Users/jonghapark/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/jonghapark/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.0/junit-jupiter-params-5.10.0.jar:/Users/jonghapark/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.0/junit-jupiter-engine-5.10.0.jar:/Users/jonghapark/.m2/repository/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/Users/jonghapark"/>
@@ -31,7 +30,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/surefire/surefirebooter-20250615205227805_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/target/surefire/surefirebooter-20250615210812271_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="21.0.6+7-LTS"/>
@@ -61,7 +60,7 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testAddStudent" classname="Comp603Test" time="0.261">
+  <testcase name="testAddStudent" classname="Comp603Test" time="0.271">
     <system-out><![CDATA[Student added.
 ]]></system-out>
   </testcase>
@@ -71,7 +70,7 @@ Course added.
 Enrollment added.
 ]]></system-out>
   </testcase>
-  <testcase name="testDeleteStudentAlsoDeletesEnrollments" classname="Comp603Test" time="0.014">
+  <testcase name="testDeleteStudentAlsoDeletesEnrollments" classname="Comp603Test" time="0.015">
     <system-out><![CDATA[Student added.
 Course added.
 Enrollment added.
@@ -79,11 +78,11 @@ All enrollments deleted for student ID 22222222
 Student deleted.
 ]]></system-out>
   </testcase>
-  <testcase name="testAddCourse" classname="Comp603Test" time="0.003">
+  <testcase name="testAddCourse" classname="Comp603Test" time="0.004">
     <system-out><![CDATA[Course added.
 ]]></system-out>
   </testcase>
-  <testcase name="testPreventDuplicateEnrollment" classname="Comp603Test" time="0.008">
+  <testcase name="testPreventDuplicateEnrollment" classname="Comp603Test" time="0.009">
     <system-out><![CDATA[Student added.
 Course added.
 Enrollment added.
