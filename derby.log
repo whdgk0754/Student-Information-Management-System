@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Sun Jun 15 18:53:07 NZST 2025:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0197-725d-01f6-00000f911a00 
+Sun Jun 15 18:56:09 NZST 2025:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0197-725f-ca7e-00000f9011e8 
 on database directory /Users/jonghapark/Desktop/Comp603/Assignment2_Student-Information-Management-System/studentDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@2c854dc5 
 Loaded from file:/Users/jonghapark/.m2/repository/org/apache/derby/derby/10.15.2.0/derby-10.15.2.0.jar
 java.vendor=Eclipse Adoptium
