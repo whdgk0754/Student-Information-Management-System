@@ -78,6 +78,8 @@ public class CourseManagement implements IntCourseManagement{
         if (course == null) {
             throw new IllegalArgumentException("Course ID not found.");
         }
+        EnrollmentDAO enrollmentDAO = new EnrollmentDAO();
+        enrollmentDAO.deleteAllByCourse(courseID);
         courseDAO.deleteCourse(course);
         
         //add for coursepanel

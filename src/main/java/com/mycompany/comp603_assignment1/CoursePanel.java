@@ -19,13 +19,15 @@ import javax.swing.event.ListSelectionEvent;
 
 public class CoursePanel extends JPanel {
     private final IntCourseManagement courseManagement;
+    private final EnrollmentPanel enrollmentPanel;
     private JTable courseTable;
     private DefaultTableModel tableModel;
     private JTextField idField, nameField, creditField;
 
-    public CoursePanel(IntCourseManagement courseManagement) {
+    public CoursePanel(IntCourseManagement courseManagement, EnrollmentPanel enrollmentPanel) {
         this.courseManagement = courseManagement;
         setLayout(new BorderLayout());
+        this.enrollmentPanel = enrollmentPanel;
 
         // Top input panel
         JPanel inputPanel = new JPanel(new GridLayout(3, 2));
@@ -127,6 +129,8 @@ public class CoursePanel extends JPanel {
                     courseManagement.deleteCourse(id);
                     showMessage("Course deleted successfully.");
                     loadCourseData();
+                    
+                    enrollmentPanel.refreshTable();
                 } catch (IllegalArgumentException ex) {
                     showMessage(ex.getMessage());
                 }

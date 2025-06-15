@@ -36,11 +36,11 @@ public class Main {
             //create instances panel
             EnrollmentPanel enrollmentPanel = new EnrollmentPanel(enrollmentManager, studentManager, courseManager);
             StudentPanel studentPanel = new StudentPanel(studentManager, enrollmentPanel);
-            
+            CoursePanel coursePanel = new CoursePanel(courseManager, enrollmentPanel);
             // Create a tabbed pane and add all three panels
             JTabbedPane tabbedPane = new JTabbedPane();
             tabbedPane.addTab("Student Management", studentPanel);
-            tabbedPane.addTab("Course Management", new CoursePanel(courseManager));
+            tabbedPane.addTab("Course Management", coursePanel);
             tabbedPane.addTab("Enrollment Management", enrollmentPanel);
 
             // Add the tabbed pane to the frame
